@@ -40,8 +40,8 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 
 .site-shell { position: relative; width: 100%; height: 100%; min-height: 480px; overflow: hidden; isolation: isolate; background: var(--ink); transition: background 1.2s ease, color 1.2s ease; }
 .site-shell[data-scene="1"], .site-shell[data-scene="2"], .site-shell[data-scene="5"] { background: #0c131d; }
-.site-shell[data-scene="3"] { background: #e9e1d3; color: #252628; }
-.site-shell[data-scene="4"] { background: #d1a17c; color: #fcf0dc; }
+.site-shell[data-scene="3"] { background: #0b1520; color: var(--paper); }
+.site-shell[data-scene="4"] { background: #101a28; color: var(--paper); }
 .site-shell[data-scene="6"] { background: #101b22; }
 .world-canvas { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .92; transition: opacity 1s ease; }
 .ambient { position: absolute; z-index: 0; width: 54vw; height: 54vw; max-width: 760px; max-height: 760px; border-radius: 50%; filter: blur(1px); pointer-events: none; transition: opacity 1.4s ease, transform 2s var(--ease-cinema); }
@@ -60,9 +60,9 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 .journey-status { display: flex; align-items: center; gap: 24px; color: rgba(236,229,215,.56); font-size: 9px; letter-spacing: .19em; font-weight: 600; }
 .journey-status__count { color: var(--paper); font-size: 11px; letter-spacing: .12em; font-variant-numeric: tabular-nums; }
 .journey-status__count b { margin: 0 6px; color: rgba(236,229,215,.4); font-weight: 400; }
-.site-shell[data-scene="3"] .journey-status { color: rgba(36,38,39,.52); }
-.site-shell[data-scene="3"] .journey-status__count { color: #252628; }
-.site-shell[data-scene="4"] .journey-status { color: rgba(255,245,229,.66); }
+.site-shell[data-scene="3"] .journey-status { color: rgba(236,229,215,.56); }
+.site-shell[data-scene="3"] .journey-status__count { color: var(--paper); }
+.site-shell[data-scene="4"] .journey-status { color: rgba(221,239,233,.7); }
 .scene { position: absolute; z-index: 1; inset: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; opacity: 0; visibility: hidden; pointer-events: none; transition: visibility 0s linear 1s; }
 .scene::-webkit-scrollbar { display: none; }
 .scene.is-active { z-index: 2; opacity: 1; visibility: visible; pointer-events: auto; transition: visibility 0s; }
@@ -218,6 +218,92 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 .final-footnote { position: absolute; bottom: 11px; color: rgba(236,229,215,.29); font-size: 8px; letter-spacing: .22em; }
 
 .site-shell[data-scene="6"] .ambient--one { opacity: .56; transform: translate(-3%,5%); }
+
+/* Scene 4: a quiet, tactile card chamber */
+.site-shell[data-scene="3"] .scene--echo { background: radial-gradient(ellipse at 50% 40%, rgba(91,113,137,.18), transparent 56%), linear-gradient(135deg,#0b1520,#111923 58%,#0d1821); }
+.site-shell[data-scene="3"] .eyebrow { color: rgba(236,229,215,.57); }
+.site-shell[data-scene="3"] .eyebrow__line { background: var(--gold); }
+.echo-layout { z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.echo-heading .section-title { font-size: clamp(48px,6.2vw,82px); }
+.echo-heading .section-title em { color: #c9b8df; }
+.echo-heading .section-intro { max-width: 610px; }
+.echo-backdrop { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
+.echo-backdrop span { position: absolute; width: clamp(180px,25vw,360px); aspect-ratio: 1; border: 1px solid rgba(198,181,219,.11); border-radius: 50%; box-shadow: 0 0 90px rgba(119,131,164,.07),inset 0 0 70px rgba(178,159,199,.04); animation-play-state: paused; }
+.scene--echo.is-active .echo-backdrop span { animation: echo-drift 18s ease-in-out infinite alternate; }
+.echo-backdrop span:nth-child(1) { top: -8%; left: -4%; }
+.echo-backdrop span:nth-child(2) { top: 42%; left: 21%; width: clamp(100px,14vw,205px); animation-delay: -3s; }
+.echo-backdrop span:nth-child(3) { right: -5%; bottom: -11%; width: clamp(230px,31vw,430px); animation-delay: -7s; }
+.echo-backdrop span:nth-child(4) { top: 7%; right: 23%; width: clamp(70px,9vw,125px); animation-delay: -5s; }
+.echo-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(14px,2vw,26px); width: min(100%,990px); margin: clamp(23px,4vh,42px) auto 0; perspective: 1400px; }
+.echo-card { min-width: 0; min-height: clamp(210px,29vh,300px); padding: 0; border: 0; border-radius: 4px; color: inherit; background: transparent; text-align: left; cursor: pointer; perspective: 1200px; -webkit-tap-highlight-color: transparent; }
+.echo-card__inner { position: relative; display: block; width: 100%; height: 100%; min-height: inherit; transform-style: preserve-3d; transition: transform .85s cubic-bezier(.19,1,.22,1); }
+.echo-card.is-open .echo-card__inner { transform: rotateY(180deg); }
+.echo-card__face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(20px,3vw,34px); border: 1px solid rgba(220,207,230,.2); border-radius: 4px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.echo-card__front { background: linear-gradient(150deg,rgba(255,255,255,.075),rgba(255,255,255,.018)); box-shadow: 0 18px 60px rgba(0,0,0,.2),inset 0 0 60px rgba(186,166,214,.035); }
+.echo-card__front::after { position: absolute; content: ""; width: 150%; height: 1px; top: 19%; left: -25%; background: linear-gradient(90deg,transparent,rgba(226,210,245,.35),transparent); transform: rotate(-27deg); opacity: .7; }
+.echo-card__back { transform: rotateY(180deg); border-color: rgba(219,196,235,.32); background: radial-gradient(ellipse at 50% 10%,rgba(159,141,183,.19),transparent 66%),linear-gradient(145deg,#1a202b,#111a24); box-shadow: 0 20px 70px rgba(0,0,0,.25),inset 0 0 60px rgba(175,153,198,.07); }
+.echo-card__number { color: rgba(236,229,215,.44); font-size: 8px; letter-spacing: .2em; }
+.echo-card__glyph { display: block; margin: 20px 0 14px; color: #dbc9ed; font-family: var(--serif); font-size: clamp(32px,4vw,52px); line-height: 1; text-shadow: 0 0 26px rgba(211,190,233,.34); }
+.echo-card__title { max-width: 250px; color: #f2eddf; font-family: var(--serif); font-size: clamp(23px,2.6vw,33px); font-weight: 400; line-height: 1.02; }
+.echo-card__body { max-width: 300px; color: rgba(241,236,223,.84); font-family: var(--serif); font-size: clamp(17px,1.8vw,21px); line-height: 1.35; }
+.echo-card__hint { margin-top: auto; padding-top: 18px; color: rgba(236,229,215,.36); font-size: 7px; letter-spacing: .16em; }
+.echo-footer { display: flex; align-items: center; justify-content: space-between; width: min(100%,990px); margin-top: 22px; }
+.echo-progress { display: flex; align-items: center; gap: 9px; color: rgba(236,229,215,.44); font-size: 9px; letter-spacing: .1em; }
+.echo-progress i { width: 6px; height: 6px; border-radius: 50%; background: #c9b8df; box-shadow: 0 0 15px rgba(201,184,223,.65); }
+.echo-footer .button { min-height: 46px; }
+
+/* Scene 5: aurora reacts to touch and pointer movement */
+.site-shell[data-scene="4"] .scene--aurora { background: linear-gradient(155deg,#0b1822 4%,#152b34 46%,#252a39 100%); }
+.aurora-field { --pointer-x: 54%; --pointer-y: 48%; position: absolute; inset: -5%; overflow: hidden; pointer-events: none; opacity: .9; background: radial-gradient(ellipse 35% 32% at var(--pointer-x) var(--pointer-y),rgba(208,231,199,.2),transparent 72%),radial-gradient(ellipse at 72% 39%,rgba(89,171,153,.22),transparent 32%),radial-gradient(ellipse at 25% 65%,rgba(112,133,179,.21),transparent 36%); }
+.aurora-field::before, .aurora-field::after { position: absolute; content: ""; inset: 0; background: linear-gradient(118deg,transparent 20%,rgba(145,208,184,.075) 38%,rgba(184,194,223,.09) 47%,transparent 62%); transform: translateX(-40%) skewY(-13deg); filter: blur(28px); opacity: .85; }
+.aurora-field::after { transform: translateX(30%) skewY(11deg); opacity: .45; background: linear-gradient(118deg,transparent 25%,rgba(99,187,164,.12) 42%,rgba(169,172,217,.07) 53%,transparent 72%); }
+.aurora-ribbon { position: absolute; left: -15%; width: 130%; height: 34%; border-radius: 50%; filter: blur(42px); opacity: .42; transform: rotate(-12deg); animation-play-state: paused; }
+.scene--aurora.is-active .aurora-ribbon { animation: aurora-flow 16s ease-in-out infinite alternate; }
+.aurora-ribbon--one { top: 7%; background: linear-gradient(90deg,transparent,rgba(77,184,159,.28),rgba(164,187,214,.14),transparent); }
+.aurora-ribbon--two { top: 26%; height: 26%; background: linear-gradient(90deg,transparent,rgba(132,174,198,.22),rgba(102,196,168,.2),transparent); animation-delay: -6s !important; }
+.aurora-ribbon--three { bottom: 2%; height: 25%; background: linear-gradient(90deg,transparent,rgba(131,139,189,.19),rgba(88,166,157,.16),transparent); animation-delay: -10s !important; }
+.aurora-lens { position: absolute; top: 48%; left: 70%; width: clamp(180px,27vw,350px); aspect-ratio: 1; display: grid; place-items: center; transform: translate(-50%,-50%); }
+.aurora-lens__core { width: 20%; aspect-ratio: 1; border-radius: 50%; background: #e3edcf; box-shadow: 0 0 24px 10px rgba(205,229,201,.42),0 0 110px 46px rgba(116,190,172,.25),0 0 200px 80px rgba(124,138,190,.12); }
+.aurora-lens__ring { position: absolute; inset: 7%; border: 1px solid rgba(205,232,213,.18); border-radius: 50%; transform: rotate(-28deg) scaleY(.56); }
+.aurora-lens__ring--two { inset: 19%; border-color: rgba(192,220,222,.22); transform: rotate(33deg) scaleY(.72); }
+.aurora-particle { position: absolute; left: var(--x); top: var(--y); width: 4px; height: 4px; border-radius: 50%; background: #dcead3; box-shadow: 0 0 14px 5px rgba(204,232,204,.42); opacity: .58; animation-play-state: paused; }
+.scene--aurora.is-active .aurora-particle { animation: particle-rise 5.8s ease-in-out infinite; animation-delay: var(--delay); }
+.aurora-layout { z-index: 1; display: flex; align-items: center; }
+.aurora-copy { width: min(630px,70%); margin-top: 1vh; }
+.eyebrow--cool { color: rgba(224,239,232,.63); }
+.eyebrow--cool .eyebrow__line { background: #b2ddcf; }
+.aurora-copy .section-title { color: #eff3e7; font-size: clamp(58px,7.4vw,100px); }
+.aurora-copy .section-title em { color: #b8d8c6; }
+.aurora-text { max-width: 530px; margin: 28px 0 16px; color: rgba(233,242,232,.82); font-family: var(--serif); font-size: clamp(20px,2vw,25px); line-height: 1.42; }
+.aurora-instruction { margin: 0 0 20px; color: rgba(220,235,225,.48); font-size: 9px; letter-spacing: .07em; }
+.aurora-actions { display: flex; align-items: center; gap: 24px; }
+.aurora-actions .button { min-height: 46px; }
+.aurora-next { color: #d6e9dc; }
+.aurora-coordinate { position: absolute; bottom: 20px; left: 0; color: rgba(220,235,225,.4); font-size: 8px; letter-spacing: .18em; }
+
+/* Scene 6: three interactive points become one constellation */
+.site-shell[data-scene="5"] .scene--promise { background: radial-gradient(ellipse at 50% 42%,rgba(128,107,151,.17),transparent 44%),linear-gradient(150deg,#10151f,#151925 48%,#101923); }
+.promise-layout { display: grid; grid-template-rows: auto 1fr auto; align-items: center; justify-items: center; }
+.promise-heading .section-title { font-size: clamp(49px,6.1vw,82px); }
+.promise-heading .section-title em { color: #d1bbdc; }
+.promise-heading .section-intro { max-width: 580px; }
+.promise-backdrop { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.promise-backdrop__halo { position: absolute; top: 22%; left: 50%; width: min(58vw,750px); aspect-ratio: 1.9; border-radius: 50%; transform: translateX(-50%); background: radial-gradient(ellipse,rgba(185,156,207,.1),transparent 69%); filter: blur(18px); }
+.promise-backdrop__grain { position: absolute; inset: 12% 20%; opacity: .26; background-image: radial-gradient(circle,rgba(223,205,235,.52) 1px,transparent 1.5px); background-size: 47px 43px; mask-image: radial-gradient(ellipse,black,transparent 70%); }
+.promise-galaxy { position: relative; width: min(100%,990px); height: clamp(270px,42vh,430px); margin-top: 5px; }
+.promise-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.promise-lines polyline { fill: none; stroke: rgba(211,190,229,.76); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 7px rgba(198,169,221,.75)); }
+.promise-node { position: absolute; left: var(--x); top: var(--y); width: clamp(165px,21vw,220px); min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 17px 14px; border: 1px solid rgba(225,207,239,.18); border-radius: 999px; color: var(--paper-bright); background: radial-gradient(ellipse at 50% 25%,rgba(171,149,198,.14),rgba(255,255,255,.015) 65%); box-shadow: 0 15px 60px rgba(0,0,0,.2),inset 0 0 28px rgba(192,168,215,.05); transform: translate(-50%,-50%); cursor: pointer; transition: border-color .45s ease,background .45s ease,box-shadow .45s ease; }
+.promise-node:hover, .promise-node.is-selected { border-color: rgba(225,207,239,.66); background: radial-gradient(ellipse at 50% 25%,rgba(171,149,198,.25),rgba(255,255,255,.04) 70%); box-shadow: 0 0 40px rgba(187,163,211,.14),0 18px 65px rgba(0,0,0,.26); }
+.promise-node__number { margin-bottom: 9px; color: rgba(226,209,239,.53); font-size: 8px; letter-spacing: .18em; }
+.promise-node__title { color: #f1ecdf; font-family: var(--serif); font-size: clamp(22px,2.5vw,29px); font-weight: 400; line-height: 1; }
+.promise-node__note { margin-top: 7px; color: rgba(236,229,215,.48); font-family: var(--serif); font-size: 14px; }
+.promise-node i { position: absolute; top: -3px; right: 20%; width: 5px; height: 5px; border-radius: 50%; background: #dec9ef; box-shadow: 0 0 16px 5px rgba(215,192,237,.35); opacity: .6; }
+.promise-node.is-selected i { opacity: 1; transform: scale(1.8); }
+.promise-bottom { z-index: 1; display: flex; align-items: center; justify-content: space-between; width: min(100%,990px); padding-top: 14px; border-top: 1px solid rgba(236,229,215,.11); }
+.promise-message { margin: 0; color: rgba(236,229,215,.7); font-family: var(--serif); font-size: clamp(17px,1.8vw,21px); }
+.promise-bottom .button { min-height: 46px; }
+
 .conversation-layout { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(350px,.9fr); align-content: center; align-items: center; column-gap: clamp(38px,8vw,120px); max-width: 1190px; }
 .conversation-main { max-width: 660px; }
 .conversation-main .eyebrow { margin-bottom: 18px; }
@@ -250,6 +336,18 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 .restart-button { position: absolute; bottom: calc(25px + var(--safe-bottom)); right: 0; display: inline-flex; align-items: center; gap: 8px; padding: 8px 0; border: 0; color: rgba(236,229,215,.42); background: transparent; cursor: pointer; font-size: 9px; letter-spacing: .06em; transition: color .25s ease; }
 .restart-button:hover { color: var(--paper); }
 .restart-button span { font-size: 16px; }
+.conversation-layout { display: grid; grid-template-columns: minmax(0,1fr); align-content: start; justify-items: center; gap: clamp(12px,2vh,20px); max-width: 1000px; padding-top: calc(94px + var(--safe-top)); padding-bottom: calc(105px + var(--safe-bottom)); }
+.conversation-main { width: 100%; max-width: 900px; text-align: center; }
+.conversation-main .eyebrow { justify-content: center; margin-bottom: 14px; }
+.conversation-title { max-width: 850px; margin-inline: auto; font-size: clamp(48px,6vw,78px); line-height: .96; }
+.conversation-lead { max-width: 680px; margin: 14px auto 0; font-size: clamp(17px,1.7vw,21px); }
+.conversation-choices { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(9px,1.4vw,16px); width: min(100%,760px); }
+.conversation-choices .prompt-chip { min-height: 48px; border-radius: 3px; font-size: 10px; letter-spacing: .035em; }
+.conversation-choices .prompt-chip.is-selected { border-color: rgba(216,184,130,.7); color: var(--paper-bright); background: rgba(216,184,130,.12); box-shadow: 0 0 24px rgba(216,184,130,.07); }
+.conversation-between { max-width: 650px; margin: 0; color: rgba(236,229,215,.48); font-family: var(--serif); font-size: clamp(16px,1.6vw,20px); line-height: 1.35; text-align: center; }
+.conversation-layout .reply-card { width: min(100%,760px); }
+.conversation-layout .reply-card textarea { min-height: 130px; }
+.site-shell[data-scene="4"] .back-button, .site-shell[data-scene="4"] .bottombar__caption { color: rgba(221,239,233,.55); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 .back-button { display: inline-flex; align-items: center; gap: 10px; padding: 10px 0; border: 0; color: rgba(236,229,215,.53); background: transparent; cursor: pointer; font-size: 8px; letter-spacing: .16em; transition: color .25s ease; }
@@ -266,6 +364,9 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 @keyframes breathe { 0%,100% { transform: scale(.92); opacity: .67; } 50% { transform: scale(1.08); opacity: 1; } }
 @keyframes node-float { 0%,100% { margin-top: 0; } 50% { margin-top: -7px; } }
 @keyframes cloud-drift { from { translate: -2% 0; } to { translate: 5% -6%; } }
+@keyframes echo-drift { from { transform: translate3d(-2%,0,0) scale(.94) rotate(-8deg); } to { transform: translate3d(3%,-4%,0) scale(1.04) rotate(8deg); } }
+@keyframes aurora-flow { from { translate: -4% 0; rotate: -3deg; opacity: .3; } to { translate: 5% -5%; rotate: 4deg; opacity: .62; } }
+@keyframes particle-rise { 0%,100% { transform: translate3d(0,9px,0) scale(.8); opacity: .28; } 50% { transform: translate3d(8px,-12px,0) scale(1.35); opacity: .9; } }
 
 @media (max-width: 860px) {
   .intro-layout { grid-template-columns: 1fr .55fr; }
@@ -304,6 +405,43 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
   .section-heading .eyebrow { text-align: center; font-size: 7px; }
   .section-title { font-size: clamp(43px, 10vw, 62px); }
   .section-intro { max-width: 300px; margin-inline: auto; font-size: 17px; }
+  .echo-layout { justify-content: flex-start; padding-top: calc(89px + var(--safe-top)); }
+  .echo-heading .eyebrow { font-size: 7px; }
+  .echo-heading .section-title { font-size: clamp(41px,10vw,59px); }
+  .echo-heading .section-intro { max-width: 325px; font-size: 16px; }
+  .echo-cards { grid-template-columns: 1fr; gap: 9px; margin-top: 19px; }
+  .echo-card, .echo-card__inner { min-height: 142px; }
+  .echo-card__face { padding: 17px 21px; }
+  .echo-card__glyph { margin: 10px 0 7px; font-size: 28px; }
+  .echo-card__title { font-size: 24px; }
+  .echo-card__body { font-size: 18px; }
+  .echo-card__hint { padding-top: 10px; font-size: 6px; }
+  .echo-footer { margin-top: 16px; }
+  .echo-progress { font-size: 8px; }
+  .echo-footer .button { min-height: 42px; gap: 12px; padding-inline: 13px; font-size: 9px; }
+  .aurora-layout { align-items: center; }
+  .aurora-copy { width: 100%; margin-top: -2vh; }
+  .aurora-copy .eyebrow { font-size: 7px; }
+  .aurora-copy .section-title { font-size: clamp(52px,12vw,75px); }
+  .aurora-text { max-width: 400px; margin-top: 22px; font-size: 19px; }
+  .aurora-instruction { max-width: 250px; font-size: 8px; line-height: 1.5; }
+  .aurora-actions { gap: 16px; }
+  .aurora-actions .button { min-height: 43px; gap: 15px; padding-inline: 13px; font-size: 9px; }
+  .aurora-actions .text-button { font-size: 9px; }
+  .aurora-lens { top: 25%; left: 76%; width: 56vw; opacity: .66; }
+  .aurora-coordinate { bottom: 16px; max-width: 210px; font-size: 7px; line-height: 1.5; }
+  .promise-layout { justify-content: start; padding-top: calc(89px + var(--safe-top)); }
+  .promise-heading .eyebrow { font-size: 7px; }
+  .promise-heading .section-title { font-size: clamp(45px,10.5vw,62px); }
+  .promise-heading .section-intro { font-size: 16px; }
+  .promise-galaxy { height: min(38vh,310px); min-height: 240px; margin-top: 2px; }
+  .promise-node { width: min(29vw,145px); min-height: 112px; padding: 12px 5px; }
+  .promise-node__number { margin-bottom: 7px; font-size: 7px; }
+  .promise-node__title { font-size: clamp(16px,4.2vw,21px); }
+  .promise-node__note { max-width: 112px; margin-top: 6px; font-size: 11px; line-height: 1.1; }
+  .promise-bottom { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 4px; }
+  .promise-message { min-height: 40px; font-size: 16px; }
+  .promise-bottom .button { align-self: flex-end; min-height: 43px; gap: 14px; padding-inline: 13px; font-size: 9px; }
   .memories-layout { justify-content: flex-start; padding-top: calc(101px + var(--safe-top)); }
   .memories-heading .section-title { font-size: clamp(39px, 9.3vw, 56px); }
   .memories-heading .section-intro { margin-top: 11px; }
@@ -369,13 +507,13 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
   .final-title { font-size: clamp(41px, 10.6vw, 59px); line-height: 1; }
   .final-signoff { margin-bottom: 23px; font-size: 20px; }
   .final-footnote { bottom: 4px; font-size: 7px; text-align: center; }
-  .conversation-layout { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 22px; padding-top: calc(87px + var(--safe-top)); padding-bottom: calc(96px + var(--safe-bottom)); }
+  .conversation-layout { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 14px; padding-top: calc(87px + var(--safe-top)); padding-bottom: calc(96px + var(--safe-bottom)); }
   .conversation-main .eyebrow { margin-bottom: 13px; }
   .conversation-title { font-size: clamp(44px, 10.3vw, 65px); line-height: .91; }
-  .conversation-lead { margin: 15px 0 18px; font-size: 17px; line-height: 1.35; }
-  .conversation-prompts__label { margin-bottom: 8px; font-size: 7px; }
-  .prompt-list { gap: 6px; }
-  .prompt-chip { min-height: 31px; padding-inline: 10px; font-size: 8px; }
+  .conversation-lead { margin: 12px auto 0; font-size: 16px; line-height: 1.35; }
+  .conversation-choices { gap: 7px; }
+  .conversation-choices .prompt-chip { min-height: 45px; padding: 7px 9px; font-size: 8px; line-height: 1.25; }
+  .conversation-between { font-size: 15px; }
   .reply-card { padding: 20px 18px 16px; }
   .reply-card__head { margin-bottom: 13px; }
   .reply-card textarea { min-height: 123px; font-size: 18px; }
@@ -395,7 +533,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
   .memory-footer .button { padding-inline: 9px; }
   .conversation-title { font-size: 42px; }
   .conversation-lead { font-size: 16px; }
-  .prompt-chip { font-size: 7px; padding-inline: 8px; }
+  .conversation-choices .prompt-chip { font-size: 7px; padding-inline: 7px; }
   .reply-card textarea { min-height: 108px; }
 }
 
@@ -529,66 +667,62 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
           </div>
         </section>
 
-        <section class="scene scene--letter" data-scene="3" id="scene-letter" aria-labelledby="letter-title" aria-hidden="true" inert>
-          <div class="scene__inner letter-layout">
-            <div class="letter-aside">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 03 · БЕЗ ОПРАВДАНИЙ</p>
-              <span class="letter-aside__number">03<span>/</span>07</span>
-              <span class="letter-aside__star" aria-hidden="true">✳</span>
+        <section class="scene scene--echo" data-scene="3" id="scene-echo" aria-labelledby="echo-title" aria-hidden="true" inert>
+          <div class="echo-backdrop" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <div class="scene__inner echo-layout">
+            <header class="section-heading echo-heading">
+              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 03 · ЧЕСТНО И СПОКОЙНО</p>
+              <h2 class="section-title" id="echo-title">Перед разговором<br /><em>важно услышать</em></h2>
+              <p class="section-intro">Три мысли, которые хочется принести с собой. Открой каждую — в любом порядке.</p>
+            </header>
+            <div class="echo-cards" id="echo-cards" aria-label="Три мысли для разговора">
+              <button class="echo-card" data-echo="0" type="button" aria-pressed="false">
+                <span class="echo-card__inner"><span class="echo-card__face echo-card__front"><span class="echo-card__number">01 / 03</span><span class="echo-card__glyph" aria-hidden="true">◌</span><strong class="echo-card__title" id="echo-title-0">Сначала — слушать</strong><span class="echo-card__hint">КОСНИСЬ, ЧТОБЫ ОТКРЫТЬ</span></span><span class="echo-card__face echo-card__back"><span class="echo-card__number">МОЯ МЫСЛЬ</span><span class="echo-card__glyph" aria-hidden="true">✳</span><span class="echo-card__body" id="echo-body-0"></span><span class="echo-card__hint">КОСНИСЬ, ЧТОБЫ ЗАКРЫТЬ</span></span></span>
+              </button>
+              <button class="echo-card" data-echo="1" type="button" aria-pressed="false">
+                <span class="echo-card__inner"><span class="echo-card__face echo-card__front"><span class="echo-card__number">02 / 03</span><span class="echo-card__glyph" aria-hidden="true">⌁</span><strong class="echo-card__title" id="echo-title-1">Дать место чувствам</strong><span class="echo-card__hint">КОСНИСЬ, ЧТОБЫ ОТКРЫТЬ</span></span><span class="echo-card__face echo-card__back"><span class="echo-card__number">МОЯ МЫСЛЬ</span><span class="echo-card__glyph" aria-hidden="true">✳</span><span class="echo-card__body" id="echo-body-1"></span><span class="echo-card__hint">КОСНИСЬ, ЧТОБЫ ЗАКРЫТЬ</span></span></span>
+              </button>
+              <button class="echo-card" data-echo="2" type="button" aria-pressed="false">
+                <span class="echo-card__inner"><span class="echo-card__face echo-card__front"><span class="echo-card__number">03 / 03</span><span class="echo-card__glyph" aria-hidden="true">✧</span><strong class="echo-card__title" id="echo-title-2">Быть честным</strong><span class="echo-card__hint">КОСНИСЬ, ЧТОБЫ ОТКРЫТЬ</span></span><span class="echo-card__face echo-card__back"><span class="echo-card__number">МОЯ МЫСЛЬ</span><span class="echo-card__glyph" aria-hidden="true">✳</span><span class="echo-card__body" id="echo-body-2"></span><span class="echo-card__hint">КОСНИСЬ, ЧТОБЫ ЗАКРЫТЬ</span></span></span>
+              </button>
             </div>
-            <article class="letter-paper">
-              <div class="letter-paper__top"><span>ЛИЧНОЕ</span><span>МЕЖДУ НАМИ</span></div>
-              <h2 class="letter-title" id="letter-title">Я хочу кое-что<br /><em>признать</em></h2>
-              <div class="letter-body" id="letter-body">
-                <p>Я понимаю, что между нами в последнее время было много неприятных моментов.</p>
-                <p>Я тоже совершал ошибки. Иногда позволял эмоциям говорить за меня вместо того, чтобы спокойно объяснить, что чувствую.</p>
-                <p>Я не хочу оправдываться или перекладывать ответственность.</p>
-                <p>Мне просто важно, чтобы ты знала: наши отношения для меня действительно много значат.</p>
-              </div>
-              <div class="letter-paper__bottom"><span>С теплом</span><span class="signature">между нами</span></div>
-            </article>
-            <div class="letter-actions">
-              <span class="read-time">ЧИТАТЬ В СВОЁМ ТЕМПЕ</span>
-              <button class="text-button" id="show-letter" type="button">Показать письмо целиком</button>
-              <button class="text-button letter-next" id="letter-next" type="button">Дальше <span aria-hidden="true">↗</span></button>
-            </div>
+            <footer class="echo-footer"><span class="echo-progress"><i></i><span id="echo-progress">Открыто 0 из 3</span></span><button class="button button--light" id="echo-next" type="button"><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button></footer>
           </div>
         </section>
 
-        <section class="scene scene--sunset" data-scene="4" id="scene-sunset" aria-labelledby="sunset-title" aria-hidden="true" inert>
-          <div class="sunset-sky" aria-hidden="true">
-            <div class="sunset-sun"></div><div class="sunset-cloud sunset-cloud--one"></div><div class="sunset-cloud sunset-cloud--two"></div>
-            <div class="sunset-horizon"></div><div class="sunset-water"></div>
+        <section class="scene scene--aurora" data-scene="4" id="scene-aurora" aria-labelledby="aurora-title" aria-hidden="true" inert>
+          <div class="aurora-field" id="aurora-field" aria-hidden="true">
+            <div class="aurora-ribbon aurora-ribbon--one"></div><div class="aurora-ribbon aurora-ribbon--two"></div><div class="aurora-ribbon aurora-ribbon--three"></div>
+            <div class="aurora-lens"><span class="aurora-lens__core"></span><span class="aurora-lens__ring aurora-lens__ring--one"></span><span class="aurora-lens__ring aurora-lens__ring--two"></span></div>
+            <span class="aurora-particle" style="--x:14%;--y:22%;--delay:-1s"></span><span class="aurora-particle" style="--x:28%;--y:68%;--delay:-3s"></span><span class="aurora-particle" style="--x:42%;--y:19%;--delay:-2s"></span><span class="aurora-particle" style="--x:66%;--y:77%;--delay:-4s"></span><span class="aurora-particle" style="--x:83%;--y:31%;--delay:-1.5s"></span><span class="aurora-particle" style="--x:91%;--y:64%;--delay:-2.5s"></span>
           </div>
-          <div class="scene__inner sunset-layout">
-            <div class="sunset-copy">
-              <p class="eyebrow eyebrow--warm"><span class="eyebrow__line"></span> ГЛАВА 04 · МОЖНО НЕ СПЕШИТЬ</p>
-              <h2 class="section-title" id="sunset-title">Тебе не нужно<br /><em>ничего решать сейчас</em></h2>
-              <div class="sunset-text">
-                <p>Я не создавал это, чтобы заставить тебя передумать.</p>
-                <p>Не хочу, чтобы ты чувствовала себя обязанной ответить взаимностью, простить меня или принять какое-то решение.</p>
-                <p>Я просто хотел подарить тебе что-то особенное и дать возможность увидеть мои мысли без ссоры и лишних слов.</p>
-              </div>
-              <button class="button button--light sunset-next" id="sunset-next" type="button"><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button>
+          <div class="scene__inner aurora-layout">
+            <div class="aurora-copy">
+              <p class="eyebrow eyebrow--cool"><span class="eyebrow__line"></span> ГЛАВА 04 · МЕЖДУ СЛОВАМИ</p>
+              <h2 class="section-title" id="aurora-title">Оставим место<br /><em>тишине</em></h2>
+              <p class="aurora-text" id="aurora-description">Не каждую мысль нужно решить за один вечер. Иногда достаточно выдохнуть, услышать друг друга и дать словам лечь на своё место.</p>
+              <p class="aurora-instruction" id="aurora-instruction">Проведи пальцем или курсором — свет откликнется.</p>
+              <div class="aurora-actions"><button class="button button--light" id="aurora-pulse" type="button"><span>Коснуться света</span><span class="button__arrow" aria-hidden="true">✧</span></button><button class="text-button aurora-next" id="aurora-next" type="button">Дальше <span aria-hidden="true">↗</span></button></div>
             </div>
-            <div class="sunset-stamp" aria-hidden="true"><span>TAKE<br />YOUR<br />TIME</span><i></i></div>
-            <p class="sunset-coordinate" aria-hidden="true">ТИШИНА ТОЖЕ МОЖЕТ БЫТЬ ОТВЕТОМ</p>
+            <span class="aurora-coordinate" aria-hidden="true">НА СВОЁМ ТЕМПЕ · В СВОЁМ СВЕТЕ</span>
           </div>
         </section>
 
-        <section class="scene scene--final" data-scene="5" id="scene-final" aria-labelledby="final-title" aria-hidden="true" inert>
-          <div class="scene__inner final-layout">
-            <div class="final-constellation" aria-hidden="true">
-              <span style="--x:50%;--y:14%"></span><span style="--x:31%;--y:20%"></span><span style="--x:17%;--y:37%"></span><span style="--x:19%;--y:60%"></span><span style="--x:33%;--y:76%"></span><span style="--x:50%;--y:87%"></span><span style="--x:68%;--y:76%"></span><span style="--x:82%;--y:60%"></span><span style="--x:84%;--y:37%"></span><span style="--x:69%;--y:20%"></span>
-              <svg viewBox="0 0 1000 560" preserveAspectRatio="none"><polyline points="500,78 310,112 170,207 180,336 330,426 500,488 680,426 820,336 835,207 690,112 500,78"></polyline></svg>
+        <section class="scene scene--promise" data-scene="5" id="scene-promise" aria-labelledby="promise-title" aria-hidden="true" inert>
+          <div class="promise-backdrop" aria-hidden="true"><span class="promise-backdrop__halo"></span><span class="promise-backdrop__grain"></span></div>
+          <div class="scene__inner promise-layout">
+            <header class="section-heading promise-heading">
+              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 05 · ТО, ЧТО МОЖНО ВЗЯТЬ С СОБОЙ</p>
+              <h2 class="section-title" id="promise-title">Три опоры<br /><em>для разговора</em></h2>
+              <p class="section-intro">Собери их в любом порядке. Или просто посмотри, как они соединяются.</p>
+            </header>
+            <div class="promise-galaxy" id="promise-galaxy" aria-label="Три опоры для разговора">
+              <svg class="promise-lines" viewBox="0 0 1000 440" preserveAspectRatio="none" aria-hidden="true"><polyline id="promise-path" points=""></polyline></svg>
+              <button class="promise-node" data-promise="0" data-point="500,65" style="--x:50%;--y:16%" type="button" aria-pressed="false"><span class="promise-node__number">01</span><strong class="promise-node__title" id="promise-node-title-0">Слушать</strong><small class="promise-node__note" id="promise-node-note-0">без желания перебить</small><i aria-hidden="true"></i></button>
+              <button class="promise-node" data-promise="1" data-point="220,340" style="--x:22%;--y:77%" type="button" aria-pressed="false"><span class="promise-node__number">02</span><strong class="promise-node__title" id="promise-node-title-1">Понять</strong><small class="promise-node__note" id="promise-node-note-1">даже если мы не согласны</small><i aria-hidden="true"></i></button>
+              <button class="promise-node" data-promise="2" data-point="780,340" style="--x:78%;--y:77%" type="button" aria-pressed="false"><span class="promise-node__number">03</span><strong class="promise-node__title" id="promise-node-title-2">Говорить честно</strong><small class="promise-node__note" id="promise-node-note-2">и бережно друг к другу</small><i aria-hidden="true"></i></button>
             </div>
-            <div class="final-copy">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 05 · КАК БЫ НИ СЛОЖИЛОСЬ</p>
-              <h2 class="final-title" id="final-title">Что бы ни произошло дальше, я благодарен за моменты, которые у нас были.</h2>
-              <p class="final-signoff">Береги себя. <span>♥</span></p>
-              <button class="button button--light" id="to-conversation" type="button"><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button>
-            </div>
-            <span class="final-footnote">EVERYTHING WE SHARED, STILL MATTERS</span>
+            <div class="promise-bottom"><p class="promise-message" id="promise-message" aria-live="polite">Коснись одной точки, чтобы начать.</p><button class="button button--light" id="promise-next" type="button"><span>Перейти к разговору</span><span class="button__arrow" aria-hidden="true">↗</span></button></div>
           </div>
         </section>
 
@@ -597,20 +731,21 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
             <div class="conversation-main">
               <p class="eyebrow"><span class="eyebrow__line"></span> МЕСТО ДЛЯ ТВОИХ СЛОВ</p>
               <h2 class="conversation-title" id="conversation-title">Давай теперь<br />поговорим и <em>закроем</em><br />этот вопрос<span class="heart-mark">♥</span></h2>
-              <p class="conversation-lead">Мне важно услышать, что думаешь ты — когда и если захочешь. Здесь можно начать с пары слов или написать всё целиком. Можно и просто закрыть эту страницу.</p>
-              <div class="conversation-prompts" id="conversation-prompts" aria-label="Начать сообщение с примера">
-                <span class="conversation-prompts__label">ЕСЛИ ТАК ПРОЩЕ, МОЖНО НАЧАТЬ ТАК</span>
-                <div class="prompt-list">
-                  <button type="button" class="prompt-chip" data-prompt="Давай поговорим, когда обоим будет удобно.">«Давай поговорим»</button>
-                  <button type="button" class="prompt-chip" data-prompt="Мне нужно немного времени, чтобы всё обдумать.">«Мне нужно время»</button>
-                  <button type="button" class="prompt-chip" data-prompt="Я хочу сначала сказать, что думаю, своими словами.">«Я напишу сама»</button>
-                </div>
-              </div>
+              <p class="conversation-lead">Мне правда важно услышать тебя. Можно ответить сейчас, позже или совсем не отвечать — решать только тебе.</p>
+            </div>
+            <div class="conversation-choices conversation-choices--first" aria-label="Выбрать, что сказать">
+              <button type="button" class="prompt-chip" data-prompt="0">Я готова поговорить</button>
+              <button type="button" class="prompt-chip" data-prompt="1">Мне нужно время</button>
+            </div>
+            <p class="conversation-between">Можно выбрать готовую фразу, изменить её или написать всё своими словами.</p>
+            <div class="conversation-choices conversation-choices--second" aria-label="Другие варианты ответа">
+              <button type="button" class="prompt-chip" data-prompt="2">Мне есть что сказать</button>
+              <button type="button" class="prompt-chip" data-prompt="3">Пока не знаю</button>
             </div>
             <form class="reply-card" id="reply-form">
               <div class="reply-card__head"><span>ТВОЙ ОТВЕТ</span><span class="reply-card__index">01 — 07</span></div>
               <label class="sr-only" for="reply-draft">Твоё сообщение</label>
-              <textarea id="reply-draft" name="reply" rows="6" placeholder="Пиши так, как чувствуешь. Здесь не нужны правильные слова…" spellcheck="true"></textarea>
+              <textarea id="reply-draft" name="reply" rows="5" placeholder="Пиши так, как чувствуешь. Здесь не нужны правильные слова…" spellcheck="true"></textarea>
               <div class="reply-card__meta"><span class="save-indicator"><i></i><span id="draft-status">Черновик сохраняется на этом устройстве</span></span><span id="character-count">0 символов</span></div>
               <div class="reply-card__actions">
                 <button class="button button--light button--copy" id="copy-draft" type="button"><span>Скопировать текст</span><span class="button__arrow" aria-hidden="true">↗</span></button>
@@ -648,7 +783,7 @@ try {
 
 const CONFIG = {
   draftStorageKey: "mezhdu-nami-reply-draft-v1",
-  sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "БЕЗ ОПРАВДАНИЙ", "МОЖНО НЕ СПЕШИТЬ", "С ТЕПЛОМ", "РАЗГОВОР"],
+  sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "ЧЕСТНЫЙ РАЗГОВОР", "МЕЖДУ СЛОВАМИ", "ТРИ ОПОРЫ", "РАЗГОВОР"],
   memories: [
     "Помнишь, как мы впервые долго разговаривали?",
     "Наши глупые шутки.",
@@ -659,26 +794,26 @@ const CONFIG = {
   memoryAside: "Некоторые моменты остаются с нами тихо.",
   constellationQuote: "Красивые вещи не всегда складываются идеально. Но это не делает их менее ценными.",
   constellationInstruction: "Сначала — верхняя звезда",
-  letterHeading: "Я хочу кое-что\nпризнать",
-  letter: [
-    "Я понимаю, что между нами в последнее время было много неприятных моментов.",
-    "Я тоже совершал ошибки. Иногда позволял эмоциям говорить за меня вместо того, чтобы спокойно объяснить, что чувствую.",
-    "Я не хочу оправдываться или перекладывать ответственность.",
-    "Мне просто важно, чтобы ты знала: наши отношения для меня действительно много значат."
+  echoCards: [
+    { title: "Сначала — слушать", body: "Я хочу услышать тебя до конца — без спора, перебиваний и попытки сразу всё исправить." },
+    { title: "Дать место чувствам", body: "Твои чувства имеют значение, даже если я вижу некоторые вещи иначе." },
+    { title: "Быть честным", body: "Я могу говорить о своих ошибках прямо, не превращая объяснение в оправдание." }
   ],
-  freedomHeading: "Тебе не нужно\nничего решать сейчас",
-  freedom: [
-    "Я не создавал это, чтобы заставить тебя передумать.",
-    "Не хочу, чтобы ты чувствовала себя обязанной ответить взаимностью, простить меня или принять какое-то решение.",
-    "Я просто хотел подарить тебе что-то особенное и дать возможность увидеть мои мысли без ссоры и лишних слов."
+  auroraText: "Не каждую мысль нужно решить за один вечер. Иногда достаточно выдохнуть, услышать друг друга и дать словам лечь на своё место.",
+  promiseItems: [
+    { title: "Слушать", note: "без желания перебить" },
+    { title: "Понять", note: "даже если мы не согласны" },
+    { title: "Говорить честно", note: "и бережно друг к другу" }
   ],
-  finalMessage: "Что бы ни произошло дальше, я благодарен за моменты, которые у нас были.",
   conversationHeading: ["Давай теперь", "поговорим и закроем", "этот вопрос"],
   conversationEmphasis: "закроем",
+  conversationLead: "Мне правда важно услышать тебя. Можно ответить сейчас, позже или совсем не отвечать — решать только тебе.",
+  conversationBetween: "Можно выбрать готовую фразу, изменить её или написать всё своими словами.",
   prompts: [
-    { label: "«Давай поговорим»", text: "Давай поговорим, когда обоим будет удобно." },
-    { label: "«Мне нужно время»", text: "Мне нужно немного времени, чтобы всё обдумать." },
-    { label: "«Я напишу сама»", text: "Я хочу сначала сказать, что думаю, своими словами." }
+    { label: "Я готова поговорить", text: "Я готова поговорить, когда мы оба сможем спокойно выслушать друг друга." },
+    { label: "Мне нужно время", text: "Мне нужно время. Я напишу, когда буду готова." },
+    { label: "Мне есть что сказать", text: "Мне важно сначала сказать всё своими словами." },
+    { label: "Пока не знаю", text: "Я пока не знаю, что ответить, и мне нужно время." }
   ]
 };
 
@@ -725,11 +860,17 @@ function prepareCopy() {
   setText("#constellation-quote", CONFIG.constellationQuote);
   setText("#constellation-instruction", CONFIG.constellationInstruction);
   setText("#memory-dialog-title", CONFIG.memories[0]);
-  setText("#final-title", CONFIG.finalMessage);
-  const letterLines = CONFIG.letterHeading.split("\n");
-  renderHeadingLines($("#letter-title"), letterLines, letterLines.length - 1);
-  const freedomLines = CONFIG.freedomHeading.split("\n");
-  renderHeadingLines($("#sunset-title"), freedomLines, freedomLines.length - 1);
+  setText("#aurora-description", CONFIG.auroraText);
+  setText(".conversation-lead", CONFIG.conversationLead);
+  setText(".conversation-between", CONFIG.conversationBetween);
+  CONFIG.echoCards.forEach((card, index) => {
+    setText(`#echo-title-${index}`, card.title);
+    setText(`#echo-body-${index}`, card.body);
+  });
+  CONFIG.promiseItems.forEach((item, index) => {
+    setText(`#promise-node-title-${index}`, item.title);
+    setText(`#promise-node-note-${index}`, item.note);
+  });
   const conversationTitle = $("#conversation-title");
   renderHeadingLines(conversationTitle, CONFIG.conversationHeading, 1, CONFIG.conversationEmphasis);
   if (conversationTitle) {
@@ -738,10 +879,6 @@ function prepareCopy() {
     heart.textContent = "♥";
     conversationTitle.append(heart);
   }
-  const letterBody = $("#letter-body");
-  if (letterBody) letterBody.innerHTML = CONFIG.letter.map((paragraph) => `<p>${paragraph}</p>`).join("");
-  const freedomBody = $(".sunset-text");
-  if (freedomBody) freedomBody.innerHTML = CONFIG.freedom.map((paragraph) => `<p>${paragraph}</p>`).join("");
   $$(".memory-node").forEach((node, index) => { node.setAttribute("aria-label", `Открыть воспоминание ${index + 1}: ${CONFIG.memories[index]}`); });
   $$(".prompt-chip").forEach((chip, index) => {
     const prompt = CONFIG.prompts[index];
@@ -973,12 +1110,11 @@ class WorldScene {
 
   setMode(mode) {
     this.mode = mode;
-    this.canvas.style.opacity = mode === "sunset" ? "0.08" : mode === "letter" ? "0.27" : "0.92";
+    this.canvas.style.opacity = mode === "aurora" ? "0.38" : mode === "echo" ? "0.66" : mode === "promise" ? "0.82" : "0.92";
     if (!this.renderer) return;
     if (mode === "intro") this.makeIntroObject();
     else if (mode === "memories") this.makeMemoryObjects();
     else if (mode === "constellation") this.makeConstellationObjects([]);
-    else if (mode === "final") this.makeFinalObjects();
     else this.clearGroup();
     this.renderOnce();
   }
@@ -1037,27 +1173,26 @@ function animateSceneIn(index) {
       .fromTo($$(".constellation-star", scene), { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: duration(.48), stagger: reducedMotion ? 0 : .05, ease: "back.out(1.7)" }, "-=.25")
       .fromTo($(".constellation-bottom", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.65) }, "-=.1");
   } else if (index === 3) {
-    tl.fromTo($(".letter-aside .eyebrow", scene), { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: duration(.65) })
-      .fromTo($(".letter-paper", scene), { opacity: 0, y: 24, rotate: -.5 }, { opacity: 1, y: 0, rotate: 0, duration: duration(1), ease: "power3.out" }, "-=.25")
-      .fromTo($$(".letter-body p", scene), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: duration(.6), stagger: reducedMotion ? 0 : .16 }, "-=.45")
-      .fromTo($(".letter-actions", scene), { opacity: 0 }, { opacity: 1, duration: duration(.55) }, "-=.2");
+    tl.fromTo($(".echo-heading", scene), { opacity: 0, y: 24, clipPath: "inset(0 0 22% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.9), ease: "power4.out" })
+      .fromTo($$(".echo-card", scene), { opacity: 0, y: 44, rotateX: -18, scale: .94 }, { opacity: 1, y: 0, rotateX: 0, scale: 1, duration: duration(.9), stagger: reducedMotion ? 0 : .13, ease: "back.out(1.35)" }, "-=.32")
+      .fromTo($(".echo-footer", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.55) }, "-=.2");
   } else if (index === 4) {
-    tl.fromTo($(".sunset-copy .eyebrow", scene), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: duration(.75) })
-      .fromTo($(".sunset-copy .section-title", scene), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: duration(.9) }, "-=.28")
-      .fromTo($$(".sunset-text p", scene), { opacity: 0, y: 13 }, { opacity: 1, y: 0, duration: duration(.7), stagger: reducedMotion ? 0 : .17 }, "-=.42")
-      .fromTo($(".sunset-next", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.18");
+    tl.fromTo($(".aurora-field", scene), { opacity: 0, scale: 1.12, filter: "blur(18px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: duration(1.35), ease: "power3.out" })
+      .fromTo($(".aurora-copy .eyebrow", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.82")
+      .fromTo($(".aurora-copy .section-title", scene), { opacity: 0, y: 25, clipPath: "inset(12% 0 25% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.9), ease: "power4.out" }, "-=.28")
+      .fromTo($$(".aurora-text, .aurora-instruction, .aurora-actions", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.65), stagger: reducedMotion ? 0 : .12 }, "-=.35");
   } else if (index === 5) {
-    tl.fromTo($(".final-constellation", scene), { opacity: 0, scale: .96 }, { opacity: .68, scale: 1, duration: duration(1.3), ease: "power2.out" })
-      .fromTo($(".final-copy .eyebrow", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.62")
-      .fromTo($(".final-title", scene), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: duration(1) }, "-=.25")
-      .fromTo($(".final-signoff", scene), { opacity: 0 }, { opacity: 1, duration: duration(.6) }, "-=.35")
-      .fromTo($("#to-conversation", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.55) }, "-=.2");
+    tl.fromTo($(".promise-heading", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.72), ease: "power3.out" })
+      .fromTo($$(".promise-node", scene), { opacity: 0, scale: .72, y: 30, rotation: -8 }, { opacity: 1, scale: 1, y: 0, rotation: 0, duration: duration(.85), stagger: reducedMotion ? 0 : .16, ease: "back.out(1.65)" }, "-=.2")
+      .fromTo($(".promise-bottom", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.25");
   } else {
     tl.fromTo($(".conversation-main .eyebrow", scene), { opacity: 0, y: 9 }, { opacity: 1, y: 0, duration: duration(.65) })
       .fromTo($(".conversation-title", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.9) }, "-=.25")
       .fromTo($(".conversation-lead", scene), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: duration(.65) }, "-=.3")
-      .fromTo($(".conversation-prompts", scene), { opacity: 0 }, { opacity: 1, duration: duration(.55) }, "-=.16")
-      .fromTo($(".reply-card", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.9), ease: "power3.out" }, "-=.46");
+      .fromTo($(".conversation-choices--first", scene), { opacity: 0, y: 14, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: duration(.6) }, "-=.12")
+      .fromTo($(".conversation-between", scene), { opacity: 0 }, { opacity: 1, duration: duration(.55) }, "-=.18")
+      .fromTo($(".conversation-choices--second", scene), { opacity: 0, y: 12, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: duration(.6) }, "-=.12")
+      .fromTo($(".reply-card", scene), { opacity: 0, y: 18, rotateX: 5 }, { opacity: 1, y: 0, rotateX: 0, duration: duration(.9), ease: "power3.out" }, "-=.25");
   }
   return tl;
 }
@@ -1070,8 +1205,9 @@ function animateSceneOut(index, onComplete) {
     [$(".intro-copy", scene), { y: -8 }], [$(".intro-orbit", scene), { scale: .965 }],
     [$(".memories-heading", scene), { y: -7 }], [$(".memory-map", scene), { scale: .985 }],
     [$(".constellation-heading", scene), { x: -9 }], [$(".constellation-board", scene), { scale: .985 }],
-    [$(".letter-paper", scene), { y: 8, rotate: .28 }], [$(".sunset-copy", scene), { y: 8 }],
-    [$(".final-constellation", scene), { scale: .965 }], [$(".final-copy", scene), { y: 8 }],
+    [$(".echo-heading", scene), { y: -8 }], [$(".echo-cards", scene), { scale: .98, rotateX: 2 }],
+    [$(".aurora-copy", scene), { x: -8 }], [$(".aurora-field", scene), { scale: 1.025 }],
+    [$(".promise-heading", scene), { y: -8 }], [$(".promise-galaxy", scene), { scale: .98 }],
     [$(".conversation-main", scene), { x: -8 }], [$(".reply-card", scene), { y: 8 }]
   ];
   const targets = uniqueExit.slice(index * 2, index * 2 + 2).filter(([element]) => element);
@@ -1219,10 +1355,83 @@ registry.register(1, {
   onExit: () => { if (gsap) gsap.killTweensOf(".memory-node"); }
 });
 registry.register(2, { onEnter: () => { world.setMode("constellation"); requestAnimationFrame(() => world.updateConstellation(constellationState.nodes)); } });
-registry.register(3, { onEnter: () => world.setMode("letter") });
-registry.register(4, { onEnter: () => world.setMode("sunset") });
-registry.register(5, { onEnter: () => world.setMode("final") });
+registry.register(3, { onEnter: () => world.setMode("echo") });
+registry.register(4, { onEnter: () => world.setMode("aurora") });
+registry.register(5, { onEnter: () => { world.setMode("promise"); updatePromiseWeave(); } });
 registry.register(6, { onEnter: () => world.setMode("conversation") });
+
+const openedEchoes = new Set();
+
+function updateEchoProgress() {
+  setText("#echo-progress", `Открыто ${openedEchoes.size} из ${CONFIG.echoCards.length}`);
+  $$(".echo-card").forEach((card, index) => {
+    const isOpen = card.classList.contains("is-open");
+    card.setAttribute("aria-pressed", String(isOpen));
+    if (isOpen) openedEchoes.add(index);
+    else openedEchoes.delete(index);
+  });
+}
+
+$$ (".echo-card").forEach((card) => card.addEventListener("click", () => {
+  card.classList.toggle("is-open");
+  updateEchoProgress();
+  if (gsap) gsap.fromTo($(".echo-card__glyph", card), { rotate: -32, scale: .7 }, { rotate: 0, scale: 1, duration: duration(.55), ease: "back.out(2)" });
+}));
+
+const auroraScene = $("#scene-aurora");
+const auroraField = $("#aurora-field");
+auroraScene.addEventListener("pointermove", (event) => {
+  if (!auroraScene.classList.contains("is-active")) return;
+  const bounds = auroraScene.getBoundingClientRect();
+  auroraField.style.setProperty("--pointer-x", `${((event.clientX - bounds.left) / bounds.width) * 100}%`);
+  auroraField.style.setProperty("--pointer-y", `${((event.clientY - bounds.top) / bounds.height) * 100}%`);
+});
+
+$("#aurora-pulse").addEventListener("click", () => {
+  setText("#aurora-instruction", "Свет меняется от одного лёгкого касания.");
+  if (gsap) {
+    gsap.fromTo($(".aurora-lens"), { scale: .82, rotation: -12 }, { scale: 1.22, rotation: 8, duration: duration(.72), yoyo: true, repeat: 1, ease: "power2.inOut" });
+    gsap.fromTo($$(".aurora-particle"), { scale: 1, opacity: .45 }, { scale: 2.4, opacity: 1, duration: duration(.58), yoyo: true, repeat: 1, stagger: reducedMotion ? 0 : .035, ease: "sine.inOut" });
+  }
+});
+
+const selectedPromises = [];
+const promisePath = $("#promise-path");
+
+function updatePromiseWeave() {
+  const nodes = $$(".promise-node");
+  nodes.forEach((node, index) => {
+    const selected = selectedPromises.includes(index);
+    node.classList.toggle("is-selected", selected);
+    node.setAttribute("aria-pressed", String(selected));
+  });
+  const points = selectedPromises.map((index) => nodes[index]?.dataset.point).filter(Boolean);
+  if (selectedPromises.length === nodes.length && points.length) points.push(points[0]);
+  promisePath.setAttribute("points", points.join(" "));
+  if (points.length > 1 && gsap) {
+    const length = promisePath.getTotalLength?.() ?? 0;
+    if (length) {
+      gsap.set(promisePath, { strokeDasharray: length, strokeDashoffset: length });
+      gsap.to(promisePath, { strokeDashoffset: 0, duration: duration(.85), ease: "power2.out" });
+    }
+  }
+  const count = selectedPromises.length;
+  const message = count === nodes.length
+    ? "Три опоры уже рядом. Дальше — только если тебе этого хочется."
+    : count > 0
+      ? `Соединено ${count} из ${nodes.length}. Можно добавить ещё или идти дальше.`
+      : "Коснись одной точки, чтобы начать.";
+  setText("#promise-message", message);
+}
+
+$$ (".promise-node").forEach((node) => node.addEventListener("click", () => {
+  const index = Number(node.dataset.promise);
+  const existing = selectedPromises.indexOf(index);
+  if (existing >= 0) selectedPromises.splice(existing, 1);
+  else selectedPromises.push(index);
+  updatePromiseWeave();
+  if (gsap) gsap.fromTo(node, { scale: .88 }, { scale: 1.08, duration: duration(.3), yoyo: true, repeat: 1, ease: "power2.out" });
+}));
 
 const openedMemories = new Set();
 const memoryDialog = $("#memory-dialog");
@@ -1355,14 +1564,9 @@ $("#memories-next").addEventListener("click", () => {
 });
 $("#constellation-next").addEventListener("click", () => { if (constellationState.complete) registry.go(3); });
 $("#constellation-replay").addEventListener("click", resetConstellation);
-$("#show-letter").addEventListener("click", () => {
-  if (gsap) gsap.to($$(".letter-body p"), { opacity: 1, y: 0, duration: duration(.4), stagger: reducedMotion ? 0 : .06, ease: "power2.out" });
-  $("#show-letter").textContent = "Письмо целиком";
-  $("#show-letter").disabled = true;
-});
-$("#letter-next").addEventListener("click", () => registry.go(4));
-$("#sunset-next").addEventListener("click", () => registry.go(5));
-$("#to-conversation").addEventListener("click", () => registry.go(6));
+$("#echo-next").addEventListener("click", () => registry.go(4));
+$("#aurora-next").addEventListener("click", () => registry.go(5));
+$("#promise-next").addEventListener("click", () => registry.go(6));
 $("#back-button").addEventListener("click", () => registry.go(registry.current - 1));
 $("#restart-story").addEventListener("click", () => registry.go(0));
 $(".wordmark").addEventListener("click", (event) => { event.preventDefault(); registry.go(0); });
@@ -1413,6 +1617,7 @@ $$ (".prompt-chip").forEach((chip) => chip.addEventListener("click", () => {
   const end = draft.selectionEnd ?? draft.value.length;
   const prefix = draft.value && start === draft.value.length && !draft.value.endsWith("\n") ? "\n" : "";
   draft.setRangeText(`${prefix}${prompt}`, start, end, "end");
+  $$(".prompt-chip").forEach((option) => option.classList.toggle("is-selected", option === chip));
   draft.focus();
   saveDraft();
   copyFeedback.textContent = "Фраза добавлена в поле — её можно изменить или удалить.";
