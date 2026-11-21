@@ -25,7 +25,7 @@
         </a>
         <div class="journey-status" aria-live="polite">
           <span class="journey-status__label" id="scene-label">ТИХОЕ ПИСЬМО</span>
-          <span class="journey-status__count" id="scene-count">01 <b>/</b> 07</span>
+          <span class="journey-status__count" id="scene-count">01 <b>/</b> 06</span>
         </div>
       </header>
 
@@ -47,7 +47,7 @@
               <span class="intro-orbit__halo"></span>
               <span class="intro-orbit__caption">IN THE SPACE<br />BETWEEN US</span>
             </div>
-            <div class="intro-index"><span>01</span><span class="intro-index__rule"></span><span>07</span></div>
+            <div class="intro-index"><span>01</span><span class="intro-index__rule"></span><span>06</span></div>
           </div>
         </section>
 
@@ -114,57 +114,48 @@
           </div>
         </section>
 
-        <section class="scene scene--match" data-scene="3" id="scene-match" aria-labelledby="match-title" aria-hidden="true" inert>
-          <div class="match-backdrop" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-          <div class="scene__inner match-layout">
-            <header class="section-heading match-heading">
+        <section class="scene scene--puzzle" data-scene="3" id="scene-puzzle" aria-labelledby="puzzle-title" aria-hidden="true" inert>
+          <div class="puzzle-backdrop" aria-hidden="true"><span class="puzzle-backdrop__halo"></span><span class="puzzle-backdrop__orbit puzzle-backdrop__orbit--one"></span><span class="puzzle-backdrop__orbit puzzle-backdrop__orbit--two"></span></div>
+          <div class="scene__inner puzzle-layout">
+            <header class="section-heading puzzle-heading">
               <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 03 · НЕБОЛЬШОЕ ИСПЫТАНИЕ</p>
-              <h2 class="section-title" id="match-title">Найди то,<br /><em>что подходит друг другу</em></h2>
-              <p class="section-intro">Переверни карточки и собери четыре пары. Ошибки ничего не стоят — можно пробовать сколько угодно.</p>
+              <h2 class="section-title" id="puzzle-title">Проведи<br /><em>свет к маяку</em></h2>
+              <p class="section-intro">Поверни зеркала, чтобы луч нашёл дорогу. Здесь можно пробовать сколько угодно.</p>
+              <p class="puzzle-instruction"><span class="puzzle-instruction__icon" aria-hidden="true">↻</span> Коснись зеркала — оно повернётся.</p>
             </header>
-            <div class="match-grid" id="match-grid" aria-label="Игра на поиск четырёх пар">
-              <button class="match-card" data-card="0" type="button" aria-label="Открыть карточку 1" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">01</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">01</span><strong class="match-card__word" id="match-word-0"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="1" type="button" aria-label="Открыть карточку 2" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">02</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">02</span><strong class="match-card__word" id="match-word-1"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="2" type="button" aria-label="Открыть карточку 3" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">03</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">03</span><strong class="match-card__word" id="match-word-2"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="3" type="button" aria-label="Открыть карточку 4" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">04</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">04</span><strong class="match-card__word" id="match-word-3"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="4" type="button" aria-label="Открыть карточку 5" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">05</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">05</span><strong class="match-card__word" id="match-word-4"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="5" type="button" aria-label="Открыть карточку 6" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">06</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">06</span><strong class="match-card__word" id="match-word-5"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="6" type="button" aria-label="Открыть карточку 7" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">07</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">07</span><strong class="match-card__word" id="match-word-6"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
-              <button class="match-card" data-card="7" type="button" aria-label="Открыть карточку 8" aria-pressed="false"><span class="match-card__inner"><span class="match-card__side match-card__cover"><span class="match-card__index">08</span><span class="match-card__symbol">✧</span><span class="match-card__caption">ОТКРЫТЬ</span></span><span class="match-card__side match-card__reveal"><span class="match-card__index">08</span><strong class="match-card__word" id="match-word-7"></strong><span class="match-card__spark" aria-hidden="true">✳</span></span></span></button>
+            <div class="puzzle-console">
+              <div class="puzzle-board" id="puzzle-board" role="group" aria-label="Поверни зеркала и проведи луч к маяку">
+                <svg class="puzzle-ray-layer" viewBox="0 0 400 400" aria-hidden="true">
+                  <defs>
+                    <filter id="beam-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+                    <linearGradient id="beam-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a5bfd1" /><stop offset="55%" stop-color="#d5c4e8" /><stop offset="100%" stop-color="#f2d4a0" /></linearGradient>
+                  </defs>
+                  <path class="puzzle-grid-lines" d="M100 0V400 M200 0V400 M300 0V400 M0 100H400 M0 200H400 M0 300H400" />
+                  <polyline class="puzzle-beam" id="puzzle-beam" points="0,250 150,250" />
+                </svg>
+                <div class="puzzle-source" aria-label="Источник света"><span></span><i></i></div>
+                <div class="puzzle-beacon" id="puzzle-beacon" aria-label="Маяк — цель"><span></span><i></i></div>
+                <button class="puzzle-mirror" data-mirror="0" data-orientation="/" style="--x:37.5%;--y:62.5%" type="button" aria-label="Повернуть зеркало 1"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>01</small></button>
+                <button class="puzzle-mirror" data-mirror="1" data-orientation="\" style="--x:37.5%;--y:37.5%" type="button" aria-label="Повернуть зеркало 2"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>02</small></button>
+                <button class="puzzle-mirror" data-mirror="2" data-orientation="/" style="--x:62.5%;--y:37.5%" type="button" aria-label="Повернуть зеркало 3"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>03</small></button>
+                <button class="puzzle-mirror" data-mirror="3" data-orientation="/" style="--x:62.5%;--y:62.5%" type="button" aria-label="Повернуть зеркало 4"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>04</small></button>
+              </div>
+              <div class="puzzle-footer">
+                <p class="puzzle-status" id="puzzle-status" role="status" aria-live="polite">Маяк ждёт луча. Поверни зеркала и найди путь.</p>
+                <div class="puzzle-actions">
+                  <button class="text-button" id="puzzle-hint" type="button">Подсказка <span aria-hidden="true">✧</span></button>
+                  <button class="text-button" id="puzzle-reset" type="button">Заново <span aria-hidden="true">↻</span></button>
+                  <button class="button button--light" id="puzzle-next" type="button" disabled><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button>
+                </div>
+              </div>
             </div>
-            <div class="match-footer"><p class="match-status" id="match-status" aria-live="polite">Найдено 0 из 4 пар</p><div class="match-actions"><button class="text-button" id="match-restart" type="button">Начать заново <span aria-hidden="true">↻</span></button><button class="button button--light" id="match-next" type="button" disabled><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button></div></div>
           </div>
         </section>
-
-        <section class="scene scene--perspective" data-scene="4" id="scene-perspective" aria-labelledby="perspective-title" aria-hidden="true" inert>
-          <div class="perspective-backdrop" aria-hidden="true"><span class="perspective-backdrop__orb"></span><span class="perspective-backdrop__orbit perspective-backdrop__orbit--one"></span><span class="perspective-backdrop__orbit perspective-backdrop__orbit--two"></span></div>
-          <div class="scene__inner perspective-layout">
-            <header class="perspective-heading">
-              <p class="eyebrow eyebrow--cool"><span class="eyebrow__line"></span> ГЛАВА 04 · ДВЕ СТОРОНЫ РАЗГОВОРА</p>
-              <h2 class="section-title" id="perspective-title">Сменим<br /><em>угол зрения</em></h2>
-              <p class="perspective-lead">Передвигай ползунок и посмотри, как меняется фокус внимания.</p>
-            </header>
-            <div class="perspective-card" id="perspective-card" style="--focus:50%">
-              <article class="perspective-side perspective-side--left" id="perspective-left-side">
-                <span class="perspective-side__label">МОЯ СТОРОНА</span><span class="perspective-side__light" aria-hidden="true"></span>
-                <p class="perspective-side__text" id="perspective-left">Я хочу объяснить, что чувствую.</p>
-              </article>
-              <span class="perspective-divider" aria-hidden="true"><i></i></span>
-              <article class="perspective-side perspective-side--right" id="perspective-right-side">
-                <span class="perspective-side__label">ТВОЯ СТОРОНА</span><span class="perspective-side__light" aria-hidden="true"></span>
-                <p class="perspective-side__text" id="perspective-right">Я хочу услышать, что чувствуешь ты.</p>
-              </article>
-            </div>
-            <div class="perspective-control"><span>МОЯ СТОРОНА</span><label class="sr-only" for="perspective-range">Переместить фокус между двумя сторонами</label><input id="perspective-range" type="range" min="0" max="100" value="50" /><span>ТВОЯ СТОРОНА</span></div>
-            <footer class="perspective-footer"><span class="perspective-count" id="perspective-count">01 <i>/</i> 03</span><button class="button button--outline" id="perspective-shift" type="button"><span>Следующая мысль</span><span class="button__arrow" aria-hidden="true">↻</span></button><button class="button button--light" id="perspective-next" type="button"><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button></footer>
-          </div>
-        </section>
-
-        <section class="scene scene--promise" data-scene="5" id="scene-promise" aria-labelledby="promise-title" aria-hidden="true" inert>
+        <section class="scene scene--promise" data-scene="4" id="scene-promise" aria-labelledby="promise-title" aria-hidden="true" inert>
           <div class="promise-backdrop" aria-hidden="true"><span class="promise-backdrop__halo"></span><span class="promise-backdrop__grain"></span></div>
           <div class="scene__inner promise-layout">
             <header class="section-heading promise-heading">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 05 · ТО, ЧТО МОЖНО ВЗЯТЬ С СОБОЙ</p>
+              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 04 · ТО, ЧТО МОЖНО ВЗЯТЬ С СОБОЙ</p>
               <h2 class="section-title" id="promise-title">Четыре опоры<br /><em>для разговора</em></h2>
               <p class="section-intro">Коснись каждой точки и соедини их в одно созвездие.</p>
             </header>
@@ -179,7 +170,7 @@
           </div>
         </section>
 
-        <section class="scene scene--conversation" data-scene="6" id="scene-conversation" aria-labelledby="conversation-title" aria-hidden="true" inert>
+        <section class="scene scene--conversation" data-scene="5" id="scene-conversation" aria-labelledby="conversation-title" aria-hidden="true" inert>
           <div class="scene__inner conversation-layout">
             <div class="conversation-main">
               <p class="eyebrow"><span class="eyebrow__line"></span> МЕСТО ДЛЯ ТВОИХ СЛОВ</p>
@@ -197,7 +188,7 @@
             </div>
             <p class="conversation-choice-feedback" id="conversation-choice-feedback" role="status" aria-live="polite"></p>
             <form class="reply-card" id="reply-form">
-              <div class="reply-card__head"><span>ТВОЙ ОТВЕТ</span><span class="reply-card__index">01 — 07</span></div>
+              <div class="reply-card__head"><span>ТВОЙ ОТВЕТ</span><span class="reply-card__index">01 — 06</span></div>
               <label class="sr-only" for="reply-draft">Твоё сообщение</label>
               <textarea id="reply-draft" name="reply" rows="5" placeholder="Пиши так, как чувствуешь. Здесь не нужны правильные слова…" spellcheck="true"></textarea>
               <div class="reply-card__meta"><span class="save-indicator"><i></i><span id="draft-status">Черновик сохраняется на этом устройстве</span></span><span id="character-count">0 символов</span></div>

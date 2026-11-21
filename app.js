@@ -14,7 +14,7 @@ const lenisReady = import("https://cdn.jsdelivr.net/npm/lenis@1.3.27/+esm")
 
 const CONFIG = {
   draftStorageKey: "mezhdu-nami-reply-draft-v1",
-  sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "ПОИСК ПАР", "ДВЕ СТОРОНЫ", "ЧЕТЫРЕ ОПОРЫ", "РАЗГОВОР"],
+  sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "ПРОВОДИМ СВЕТ", "ЧЕТЫРЕ ОПОРЫ", "РАЗГОВОР"],
   memories: [
     "Помнишь, как мы впервые долго разговаривали?",
     "Наши глупые шутки.",
@@ -25,21 +25,8 @@ const CONFIG = {
   memoryAside: "Некоторые моменты остаются с нами тихо.",
   constellationQuote: "Красивые вещи не всегда складываются идеально. Но это не делает их менее ценными.",
   constellationInstruction: "Сначала — верхняя звезда",
-  gameCards: [
-    { pair: "listen", label: "Слушать" },
-    { pair: "space", label: "Дать время" },
-    { pair: "honesty", label: "Говорить честно" },
-    { pair: "care", label: "Бережно" },
-    { pair: "listen", label: "Дослушать" },
-    { pair: "honesty", label: "Открыто" },
-    { pair: "care", label: "С уважением" },
-    { pair: "space", label: "Не торопить" }
-  ],
-  perspectives: [
-    { left: "Я хочу объяснить, что чувствую.", right: "Я хочу услышать, что чувствуешь ты." },
-    { left: "Мне важно признать свои ошибки.", right: "Тебе не нужно сразу быть готовой их принять." },
-    { left: "Я надеюсь найти общий язык.", right: "Я не буду требовать ответа прямо сейчас." }
-  ],
+  mirrorStart: ["/", "\\", "/", "/"],
+  mirrorSolution: ["/", "/", "\\", "\\"],
   promiseItems: [
     { title: "Слушать", note: "не перебивая" },
     { title: "Понять", note: "даже в несогласии" },
@@ -129,18 +116,8 @@ function prepareCopy() {
   setText("#constellation-quote", CONFIG.constellationQuote);
   setText("#constellation-instruction", CONFIG.constellationInstruction);
   setText("#memory-dialog-title", CONFIG.memories[0]);
-  setText("#perspective-left", CONFIG.perspectives[0].left);
-  setText("#perspective-right", CONFIG.perspectives[0].right);
   setText(".conversation-lead", CONFIG.conversationLead);
   setText(".conversation-between", CONFIG.conversationBetween);
-  CONFIG.gameCards.forEach((card, index) => {
-    setText(`#match-word-${index}`, card.label);
-    const button = $(`.match-card[data-card="${index}"]`);
-    if (button) {
-      button.dataset.pair = card.pair;
-      button.setAttribute("aria-label", `Открыть карточку ${index + 1}`);
-    }
-  });
   CONFIG.promiseItems.forEach((item, index) => {
     setText(`#promise-node-title-${index}`, item.title);
     setText(`#promise-node-note-${index}`, item.note);
@@ -181,6 +158,10 @@ class WorldScene {
   }
 
   create() {
+    if (!THREE || !this.canvas) {
+      if (this.canvas) this.canvas.hidden = true;
+      return false;
+    }
     try {
       this.renderer = new THREE.WebGLRenderer({
         canvas: this.canvas,
@@ -384,7 +365,7 @@ class WorldScene {
 
   setMode(mode) {
     this.mode = mode;
-    this.canvas.style.opacity = mode === "perspective" ? "0.28" : mode === "match" ? "0.68" : mode === "promise" ? "0.82" : "0.92";
+    this.canvas.style.opacity = mode === "puzzle" ? "0.68" : mode === "promise" ? "0.82" : "0.92";
     if (!this.renderer) return;
     if (mode === "intro") this.makeIntroObject();
     else if (mode === "memories") this.makeMemoryObjects();
@@ -435,7 +416,8 @@ function animateSceneIn(index) {
   const scene = scenes[index];
   const inner = $(".scene__inner", scene);
   if (!gsap || !inner) return;
-  gsap.set($$("*", inner), { clearProps: "opacity,transform,clipPath" });
+  // Clear prior entrance opacity without removing CSS centering transforms.
+  gsap.set($$("*", inner), { clearProps: "opacity,clipPath" });
   gsap.set(inner, { clearProps: "opacity,transform" });
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   if (index === 0) {
@@ -453,14 +435,11 @@ function animateSceneIn(index) {
       .fromTo($$(".constellation-star", scene), { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: duration(.48), stagger: reducedMotion ? 0 : .05, ease: "back.out(1.7)" }, "-=.25")
       .fromTo($(".constellation-bottom", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.65) }, "-=.1");
   } else if (index === 3) {
-    tl.fromTo($(".match-heading", scene), { opacity: 0, y: 24, clipPath: "inset(0 0 22% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.9), ease: "power4.out" })
-      .fromTo($$(".match-card", scene), { opacity: 0, y: 34, rotateX: -17, scale: .9 }, { opacity: 1, y: 0, rotateX: 0, scale: 1, duration: duration(.78), stagger: reducedMotion ? 0 : .07, ease: "back.out(1.55)" }, "-=.28")
-      .fromTo($(".match-footer", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.55) }, "-=.2");
+    tl.fromTo($(".puzzle-heading", scene), { opacity: 0, y: 24, clipPath: "inset(0 0 22% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.9), ease: "power4.out" })
+      .fromTo($(".puzzle-board", scene), { opacity: 0, scale: .88, rotate: -4, filter: "blur(8px)" }, { opacity: 1, scale: 1, rotate: 0, filter: "blur(0px)", duration: duration(1.1), ease: "back.out(1.35)" }, "-=.35")
+      .fromTo($$(".puzzle-mirror", scene), { opacity: 0, scale: .65 }, { opacity: 1, scale: 1, duration: duration(.55), stagger: reducedMotion ? 0 : .08, ease: "back.out(1.8)" }, "-=.55")
+      .fromTo($(".puzzle-footer", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.55) }, "-=.2");
   } else if (index === 4) {
-    tl.fromTo($(".perspective-heading", scene), { opacity: 0, y: 22, clipPath: "inset(0 0 20% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.85), ease: "power4.out" })
-      .fromTo($(".perspective-card", scene), { opacity: 0, y: 26, rotateY: -13, scale: .94, filter: "blur(9px)" }, { opacity: 1, y: 0, rotateY: 0, scale: 1, filter: "blur(0px)", duration: duration(1.05), ease: "power3.out" }, "-=.25")
-      .fromTo($$(".perspective-control, .perspective-footer", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.6), stagger: reducedMotion ? 0 : .1 }, "-=.35");
-  } else if (index === 5) {
     tl.fromTo($(".promise-heading", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.72), ease: "power3.out" })
       .fromTo($$(".promise-node", scene), { opacity: 0, scale: .72, y: 30, rotation: -8 }, { opacity: 1, scale: 1, y: 0, rotation: 0, duration: duration(.85), stagger: reducedMotion ? 0 : .16, ease: "back.out(1.65)" }, "-=.2")
       .fromTo($(".promise-bottom", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.25");
@@ -484,8 +463,7 @@ function animateSceneOut(index, onComplete) {
     [$(".intro-copy", scene), { y: -8 }], [$(".intro-orbit", scene), { scale: .965 }],
     [$(".memories-heading", scene), { y: -7 }], [$(".memory-map", scene), { scale: .985 }],
     [$(".constellation-heading", scene), { x: -9 }], [$(".constellation-board", scene), { scale: .985 }],
-    [$(".match-heading", scene), { y: -8 }], [$(".match-grid", scene), { scale: .98, rotateX: 2 }],
-    [$(".perspective-heading", scene), { x: -8 }], [$(".perspective-card", scene), { scale: .98, rotateY: 4 }],
+    [$(".puzzle-heading", scene), { y: -8 }], [$(".puzzle-board", scene), { scale: .98, rotate: 2 }],
     [$(".promise-heading", scene), { y: -8 }], [$(".promise-galaxy", scene), { scale: .98 }],
     [$(".conversation-main", scene), { x: -8 }], [$(".reply-card", scene), { y: 8 }]
   ];
@@ -498,7 +476,7 @@ function animateSceneOut(index, onComplete) {
 
 function updateChrome(index) {
   const count = String(index + 1).padStart(2, "0");
-  setText("#scene-count", `${count} / 07`);
+  setText("#scene-count", `${count} / ${String(scenes.length).padStart(2, "0")}`);
   setText("#scene-label", CONFIG.sceneLabels[index]);
   $("#progress-fill").style.width = `${((index + 1) / scenes.length) * 100}%`;
   $("#back-button").hidden = index === 0;
@@ -569,7 +547,7 @@ class SceneRegistry {
         onUpdate: (self) => scene.style.setProperty("--story-scroll", self.progress.toFixed(3))
       });
       triggers.push(progressTrigger);
-      const heading = $(".section-heading, .letter-paper, .sunset-copy, .conversation-main", scene);
+      const heading = $(".section-heading, .conversation-main", scene);
       if (heading && gsap) {
         const parallax = gsap.to(heading, { y: -12, ease: "none", scrollTrigger: { trigger: $(".scene__inner", scene), scroller: scene, start: "top top", end: "bottom bottom", scrub: .6 } });
         if (parallax.scrollTrigger) triggers.push(parallax.scrollTrigger);
@@ -642,116 +620,130 @@ registry.register(1, {
   onExit: () => { if (gsap) gsap.killTweensOf(".memory-node"); }
 });
 registry.register(2, { onEnter: () => { world.setMode("constellation"); requestAnimationFrame(() => world.updateConstellation(constellationState.nodes)); } });
-registry.register(3, { onEnter: () => world.setMode("match") });
-registry.register(4, { onEnter: () => { world.setMode("perspective"); renderPerspective(); } });
-registry.register(5, { onEnter: () => { world.setMode("promise"); updatePromiseWeave(); } });
-registry.register(6, { onEnter: () => world.setMode("conversation") });
+registry.register(3, { onEnter: () => { world.setMode("puzzle"); refreshPuzzle(); } });
+registry.register(4, { onEnter: () => { world.setMode("promise"); updatePromiseWeave(); } });
+registry.register(5, { onEnter: () => world.setMode("conversation") });
 
-const matchState = { open: [], matched: new Set(), locked: false };
-const matchCards = $$(".match-card");
-const matchGrid = $("#match-grid");
+const mirrorPositions = [
+  { x: 150, y: 250 }, { x: 150, y: 150 },
+  { x: 250, y: 150 }, { x: 250, y: 250 }
+];
+const mirrorButtons = $$(".puzzle-mirror");
+const mirrorDirections = {
+  "/": { E: "N", N: "E", W: "S", S: "W" },
+  "\\": { E: "S", S: "E", W: "N", N: "W" }
+};
+let mirrorState = [...CONFIG.mirrorStart];
+let puzzleComplete = false;
 
-function updateMatchProgress() {
-  const count = matchState.matched.size / 2;
-  const complete = count === 4;
-  setText("#match-status", complete ? "Все четыре пары соединились. Можно идти дальше." : `Найдено ${count} из 4 пар`);
-  $("#match-next").disabled = !complete;
-  matchGrid.classList.toggle("is-complete", complete);
-  $("#scene-match").classList.toggle("is-complete", complete);
+function distanceAhead(from, to, direction) {
+  if (direction === "E" && to.y === from.y && to.x > from.x) return to.x - from.x;
+  if (direction === "W" && to.y === from.y && to.x < from.x) return from.x - to.x;
+  if (direction === "S" && to.x === from.x && to.y > from.y) return to.y - from.y;
+  if (direction === "N" && to.x === from.x && to.y < from.y) return from.y - to.y;
+  return Infinity;
 }
 
-function flipMatchCard(card, open) {
-  card.classList.toggle("is-open", open);
-  card.setAttribute("aria-pressed", String(open));
-  if (gsap) gsap.to($(".match-card__inner", card), { rotateY: open ? 180 : 0, duration: duration(.68), ease: "power3.inOut" });
+function edgePoint(from, direction) {
+  if (direction === "E") return { x: 400, y: from.y };
+  if (direction === "W") return { x: 0, y: from.y };
+  if (direction === "S") return { x: from.x, y: 400 };
+  return { x: from.x, y: 0 };
 }
 
-function resetMatchGame() {
-  matchState.open = [];
-  matchState.matched.clear();
-  matchState.locked = false;
-  matchCards.forEach((card) => {
-    card.classList.remove("is-open", "is-matched");
-    card.setAttribute("aria-pressed", "false");
-    if (gsap) gsap.set($(".match-card__inner", card), { clearProps: "transform" });
+function tracePuzzleBeam() {
+  const points = [{ x: 0, y: 250 }];
+  const touched = new Set();
+  const visited = new Set();
+  let position = points[0];
+  let direction = "E";
+  let solved = false;
+
+  for (let step = 0; step < 16; step += 1) {
+    let nextMirror = -1;
+    let mirrorDistance = Infinity;
+    mirrorPositions.forEach((mirror, index) => {
+      const distance = distanceAhead(position, mirror, direction);
+      if (distance < mirrorDistance) {
+        nextMirror = index;
+        mirrorDistance = distance;
+      }
+    });
+
+    const goal = { x: 400, y: 250 };
+    const goalDistance = distanceAhead(position, goal, direction);
+    if (goalDistance < mirrorDistance) {
+      points.push(goal);
+      solved = true;
+      break;
+    }
+    if (nextMirror < 0) {
+      points.push(edgePoint(position, direction));
+      break;
+    }
+
+    const mirror = mirrorPositions[nextMirror];
+    points.push(mirror);
+    touched.add(nextMirror);
+    const stateKey = `${nextMirror}:${direction}`;
+    if (visited.has(stateKey)) break;
+    visited.add(stateKey);
+    direction = mirrorDirections[mirrorState[nextMirror]][direction];
+    position = mirror;
+  }
+
+  return { points, touched, solved };
+}
+
+function refreshPuzzle() {
+  const board = $("#puzzle-board");
+  const beacon = $("#puzzle-beacon");
+  const beam = $("#puzzle-beam");
+  const result = tracePuzzleBeam();
+  beam.setAttribute("points", result.points.map(({ x, y }) => `${x},${y}`).join(" "));
+  mirrorButtons.forEach((button, index) => {
+    const orientation = mirrorState[index];
+    button.dataset.orientation = orientation;
+    button.classList.toggle("is-backslash", orientation === "\\");
+    button.classList.toggle("is-aimed", result.touched.has(index));
+    button.classList.remove("is-hinted");
+    button.setAttribute("aria-pressed", String(orientation === "\\"));
+    button.setAttribute("aria-label", `Повернуть зеркало ${index + 1}. Сейчас наклон ${orientation === "/" ? "вверх направо" : "вниз направо"}`);
   });
-  updateMatchProgress();
+  puzzleComplete = result.solved;
+  board.classList.toggle("is-complete", puzzleComplete);
+  beacon.classList.toggle("is-lit", puzzleComplete);
+  $("#puzzle-next").disabled = !puzzleComplete;
+  setText("#puzzle-status", puzzleComplete
+    ? "Маяк загорелся. Иногда путь находится шаг за шагом."
+    : "Маяк ждёт луча. Поверни зеркала и найди путь.");
 }
 
-function chooseMatchCard(card) {
-  const id = Number(card.dataset.card);
-  if (matchState.locked || matchState.matched.has(id) || matchState.open.includes(id)) return;
-  flipMatchCard(card, true);
-  matchState.open.push(id);
-  if (matchState.open.length < 2) return;
-  const [firstId, secondId] = matchState.open;
-  const first = matchCards[firstId];
-  const second = matchCards[secondId];
-  if (first.dataset.pair === second.dataset.pair) {
-    matchState.open = [];
-    matchState.matched.add(firstId);
-    matchState.matched.add(secondId);
-    first.classList.add("is-matched");
-    second.classList.add("is-matched");
-    if (gsap) gsap.fromTo([first, second], { scale: 1, filter: "brightness(1)" }, { scale: 1.055, filter: "brightness(1.5)", duration: duration(.32), yoyo: true, repeat: 1, stagger: .04, ease: "power2.out" });
-    updateMatchProgress();
-    return;
+function turnMirror(index) {
+  mirrorState[index] = mirrorState[index] === "/" ? "\\" : "/";
+  refreshPuzzle();
+  if (gsap) gsap.fromTo($(".puzzle-mirror__frame", mirrorButtons[index]), { scale: .88, rotate: -12 }, { scale: 1, rotate: 0, duration: duration(.42), ease: "back.out(2)" });
+  if (puzzleComplete && gsap) {
+    gsap.fromTo("#puzzle-beacon", { scale: .55, filter: "brightness(.7)" }, { scale: 1.3, filter: "brightness(1.8)", duration: duration(.48), yoyo: true, repeat: 1, ease: "power2.out" });
   }
-  matchState.locked = true;
-  if (gsap) gsap.fromTo([first, second], { x: 0 }, { x: 5, duration: duration(.055), repeat: 5, yoyo: true, ease: "sine.inOut", onComplete: () => gsap.set([first, second], { clearProps: "x" }) });
-  window.setTimeout(() => {
-    flipMatchCard(first, false);
-    flipMatchCard(second, false);
-    matchState.open = [];
-    matchState.locked = false;
-  }, reducedMotion ? 120 : 760);
 }
 
-matchCards.forEach((card) => card.addEventListener("click", () => chooseMatchCard(card)));
-$("#match-restart").addEventListener("click", resetMatchGame);
-$("#match-next").addEventListener("click", () => registry.go(4));
-
-let perspectiveIndex = 0;
-const perspectiveCard = $("#perspective-card");
-const perspectiveRange = $("#perspective-range");
-
-function renderPerspective() {
-  const item = CONFIG.perspectives[perspectiveIndex];
-  if (!item) return;
-  setText("#perspective-left", item.left);
-  setText("#perspective-right", item.right);
-  setText("#perspective-count", `${String(perspectiveIndex + 1).padStart(2, "0")} / 03`);
-  perspectiveRange.value = "50";
-  perspectiveCard.style.setProperty("--focus", "50%");
-  $("#perspective-left-side").style.setProperty("--side-focus", "1");
-  $("#perspective-right-side").style.setProperty("--side-focus", "1");
+function resetPuzzle() {
+  mirrorState = [...CONFIG.mirrorStart];
+  refreshPuzzle();
 }
 
-perspectiveRange.addEventListener("input", () => {
-  const value = Number(perspectiveRange.value);
-  perspectiveCard.style.setProperty("--focus", `${value}%`);
-  const leftFocus = 1 - value / 100;
-  const rightFocus = value / 100;
-  const left = $("#perspective-left-side");
-  const right = $("#perspective-right-side");
-  left.style.setProperty("--side-focus", String(.68 + leftFocus * .32));
-  right.style.setProperty("--side-focus", String(.68 + rightFocus * .32));
-  if (gsap) gsap.to([left, right], { scale: (index) => index === 0 ? 1 + leftFocus * .035 : 1 + rightFocus * .035, duration: duration(.24), ease: "power2.out" });
+mirrorButtons.forEach((button) => button.addEventListener("click", () => turnMirror(Number(button.dataset.mirror))));
+$("#puzzle-reset").addEventListener("click", resetPuzzle);
+$("#puzzle-hint").addEventListener("click", () => {
+  const index = mirrorState.findIndex((orientation, mirrorIndex) => orientation !== CONFIG.mirrorSolution[mirrorIndex]);
+  if (index < 0) return;
+  const button = mirrorButtons[index];
+  button.classList.add("is-hinted");
+  setText("#puzzle-status", `Попробуй повернуть зеркало ${index + 1}: наклон ${CONFIG.mirrorSolution[index] === "/" ? "вверх направо" : "вниз направо"}.`);
+  if (gsap) gsap.fromTo($(".puzzle-mirror__frame", button), { scale: 1 }, { scale: 1.18, duration: duration(.32), yoyo: true, repeat: 3, ease: "sine.inOut" });
 });
-
-$("#perspective-shift").addEventListener("click", () => {
-  const next = (perspectiveIndex + 1) % CONFIG.perspectives.length;
-  if (!gsap || reducedMotion) {
-    perspectiveIndex = next;
-    renderPerspective();
-    return;
-  }
-  gsap.timeline({ onComplete: () => { perspectiveIndex = next; renderPerspective(); } })
-    .to(perspectiveCard, { rotateY: 13, scale: .965, filter: "blur(5px)", opacity: .25, duration: .24, ease: "power2.in" })
-    .set(perspectiveCard, { rotateY: -13 })
-    .to(perspectiveCard, { rotateY: 0, scale: 1, filter: "blur(0px)", opacity: 1, duration: .55, ease: "power3.out" });
-});
-$("#perspective-next").addEventListener("click", () => registry.go(5));
+$("#puzzle-next").addEventListener("click", () => { if (puzzleComplete) registry.go(4); });
 
 const selectedPromises = [];
 const promisePath = $("#promise-path");
@@ -945,7 +937,7 @@ $("#memories-next").addEventListener("click", () => {
 });
 $("#constellation-next").addEventListener("click", () => { if (constellationState.complete) registry.go(3); });
 $("#constellation-replay").addEventListener("click", resetConstellation);
-$("#promise-next").addEventListener("click", () => registry.go(6));
+$("#promise-next").addEventListener("click", () => registry.go(5));
 $("#back-button").addEventListener("click", () => registry.go(registry.current - 1));
 $("#restart-story").addEventListener("click", () => registry.go(0));
 $(".wordmark").addEventListener("click", (event) => { event.preventDefault(); registry.go(0); });
