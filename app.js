@@ -309,14 +309,29 @@ class WorldScene {
       const rect = node.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
       const point = this.worldAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 0);
-      const glow = this.glowSprite(0xf1d6a3, 0.63, 2.9);
+      const opened = node.classList.contains("is-opened");
+      const glow = this.glowSprite(opened ? 0xf1d6a3 : 0xa5adb5, opened ? 0.72 : 0.1, opened ? 3.2 : 1.45);
       glow.position.copy(point);
       this.modeGroup.add(glow);
-      const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.3, 12, 8), new THREE.MeshBasicMaterial({ color: 0xf2d8a4, transparent: true, opacity: 0.84 }));
+      const sphere = new THREE.Mesh(new THREE.SphereGeometry(opened ? 0.3 : 0.21, 12, 8), new THREE.MeshBasicMaterial({ color: opened ? 0xf2d8a4 : 0x8d969f, transparent: true, opacity: opened ? 0.84 : 0.28 }));
       sphere.position.copy(point);
       this.modeGroup.add(sphere);
       this.memoryNodes.push({ node, point, glow, sphere });
     });
+  }
+
+  updateMemoryNodes(openedIndices) {
+    if (this.mode !== "memories" || !this.renderer) return;
+    this.memoryNodes.forEach(({ node, glow, sphere }) => {
+      const opened = openedIndices.has(Number(node.dataset.memory));
+      glow.material.color.setHex(opened ? 0xf1d6a3 : 0xa5adb5);
+      glow.material.opacity = opened ? 0.72 : 0.1;
+      glow.scale.setScalar(opened ? 3.2 : 1.45);
+      sphere.material.color.setHex(opened ? 0xf2d8a4 : 0x8d969f);
+      sphere.material.opacity = opened ? 0.84 : 0.28;
+      sphere.scale.setScalar(opened ? 1 : 0.72);
+    });
+    this.renderOnce();
   }
 
   makeConstellationObjects(nodes = []) {
@@ -800,6 +815,7 @@ function updateMemoryProgress() {
   setText("#memory-progress", `Открыто ${openedMemories.size} из ${CONFIG.memories.length}`);
   $("#memories-next").disabled = openedMemories.size !== CONFIG.memories.length;
   $$(".memory-node").forEach((node, index) => node.classList.toggle("is-opened", openedMemories.has(index)));
+  world.updateMemoryNodes(openedMemories);
 }
 
 function openMemory(index) {
