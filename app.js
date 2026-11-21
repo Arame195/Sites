@@ -513,12 +513,14 @@ class SceneRegistry {
       if (heading) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
-        // The WebView can still scroll the hidden-overflow shell when focus moves.
+        // Some WebViews scroll focus containers even when preventScroll is requested.
+        this.elements[index].scrollTop = 0;
         shell.scrollTop = 0;
       }
     }
     requestAnimationFrame(() => {
       if (this.current !== index) return;
+      this.elements[index].scrollTop = 0;
       shell.scrollTop = 0;
       this.attachScroll(index);
     });
