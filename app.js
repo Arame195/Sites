@@ -513,9 +513,15 @@ class SceneRegistry {
       if (heading) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
+        // The WebView can still scroll the hidden-overflow shell when focus moves.
+        shell.scrollTop = 0;
       }
     }
-    requestAnimationFrame(() => this.attachScroll(index));
+    requestAnimationFrame(() => {
+      if (this.current !== index) return;
+      shell.scrollTop = 0;
+      this.attachScroll(index);
+    });
   }
 
   attachScroll(index) {
