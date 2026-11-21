@@ -1,21 +1,20 @@
-let THREE = null;
-try {
-  THREE = await import("https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js");
-} catch (error) {
-  console.info("Three.js is unavailable; the 2D constellation remains active.", error);
+(async function bootStory() {
+if (document.readyState === "loading") {
+  await new Promise((resolve) => document.addEventListener("DOMContentLoaded", resolve, { once: true }));
 }
 
+let THREE = null;
 let Lenis = null;
-try {
-  const lenisModule = await import("https://cdn.jsdelivr.net/npm/lenis@1.3.27/+esm");
-  Lenis = lenisModule.default ?? lenisModule.Lenis ?? null;
-} catch (error) {
-  console.info("Lenis is unavailable; native scene scrolling remains enabled.", error);
-}
+const threeReady = import("https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js")
+  .then((module) => { THREE = module; return module; })
+  .catch((error) => { console.info("Three.js is unavailable; the 2D constellation remains active.", error); return null; });
+const lenisReady = import("https://cdn.jsdelivr.net/npm/lenis@1.3.27/+esm")
+  .then((module) => module.default ?? module.Lenis ?? null)
+  .catch((error) => { console.info("Lenis is unavailable; native scene scrolling remains enabled.", error); return null; });
 
 const CONFIG = {
   draftStorageKey: "mezhdu-nami-reply-draft-v1",
-  sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "БЕЗ ОПРАВДАНИЙ", "МОЖНО НЕ СПЕШИТЬ", "С ТЕПЛОМ", "РАЗГОВОР"],
+  sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "ПОИСК ПАР", "ДВЕ СТОРОНЫ", "ЧЕТЫРЕ ОПОРЫ", "РАЗГОВОР"],
   memories: [
     "Помнишь, как мы впервые долго разговаривали?",
     "Наши глупые шутки.",
@@ -26,26 +25,36 @@ const CONFIG = {
   memoryAside: "Некоторые моменты остаются с нами тихо.",
   constellationQuote: "Красивые вещи не всегда складываются идеально. Но это не делает их менее ценными.",
   constellationInstruction: "Сначала — верхняя звезда",
-  letterHeading: "Я хочу кое-что\nпризнать",
-  letter: [
-    "Я понимаю, что между нами в последнее время было много неприятных моментов.",
-    "Я тоже совершал ошибки. Иногда позволял эмоциям говорить за меня вместо того, чтобы спокойно объяснить, что чувствую.",
-    "Я не хочу оправдываться или перекладывать ответственность.",
-    "Мне просто важно, чтобы ты знала: наши отношения для меня действительно много значат."
+  gameCards: [
+    { pair: "listen", label: "Слушать" },
+    { pair: "space", label: "Дать время" },
+    { pair: "honesty", label: "Говорить честно" },
+    { pair: "care", label: "Бережно" },
+    { pair: "listen", label: "Дослушать" },
+    { pair: "honesty", label: "Открыто" },
+    { pair: "care", label: "С уважением" },
+    { pair: "space", label: "Не торопить" }
   ],
-  freedomHeading: "Тебе не нужно\nничего решать сейчас",
-  freedom: [
-    "Я не создавал это, чтобы заставить тебя передумать.",
-    "Не хочу, чтобы ты чувствовала себя обязанной ответить взаимностью, простить меня или принять какое-то решение.",
-    "Я просто хотел подарить тебе что-то особенное и дать возможность увидеть мои мысли без ссоры и лишних слов."
+  perspectives: [
+    { left: "Я хочу объяснить, что чувствую.", right: "Я хочу услышать, что чувствуешь ты." },
+    { left: "Мне важно признать свои ошибки.", right: "Тебе не нужно сразу быть готовой их принять." },
+    { left: "Я надеюсь найти общий язык.", right: "Я не буду требовать ответа прямо сейчас." }
   ],
-  finalMessage: "Что бы ни произошло дальше, я благодарен за моменты, которые у нас были.",
+  promiseItems: [
+    { title: "Слушать", note: "не перебивая" },
+    { title: "Понять", note: "даже в несогласии" },
+    { title: "Говорить честно", note: "и бережно" },
+    { title: "Беречь границы", note: "не торопить ответ" }
+  ],
   conversationHeading: ["Давай теперь", "поговорим и закроем", "этот вопрос"],
   conversationEmphasis: "закроем",
-  prompts: [
-    { label: "«Давай поговорим»", text: "Давай поговорим, когда обоим будет удобно." },
-    { label: "«Мне нужно время»", text: "Мне нужно немного времени, чтобы всё обдумать." },
-    { label: "«Я напишу сама»", text: "Я хочу сначала сказать, что думаю, своими словами." }
+  conversationLead: "Мне правда важно услышать тебя. Можно ответить сейчас, позже или совсем не отвечать — решать только тебе.",
+  conversationBetween: "Можно выбрать готовую фразу, изменить её или написать всё своими словами.",
+  conversationOptions: [
+    { label: "Я готова поговорить", response: "Хорошо. Я готов спокойно поговорить и выслушать тебя." },
+    { label: "Мне нужно время", response: "Понимаю. Возьми столько времени, сколько тебе нужно." },
+    { label: "Мне есть что сказать", response: "Я буду слушать — без перебиваний и спешки." },
+    { label: "Пока не знаю", response: "Это нормально. Тебе не нужно знать ответ прямо сейчас." }
   ]
 };
 
@@ -53,12 +62,40 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const shell = $("#site-shell");
 const scenes = $$(".scene");
-const gsap = window.gsap ?? null;
-const ScrollTrigger = window.ScrollTrigger ?? null;
+let gsap = window.gsap ?? null;
+let ScrollTrigger = window.ScrollTrigger ?? null;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const duration = (value) => reducedMotion ? 0.01 : value;
 
-if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+function loadRemoteScript(url, ready) {
+  if (ready()) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = url;
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.head.append(script);
+  });
+}
+
+const motionReady = loadRemoteScript(
+  "https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js",
+  () => Boolean(window.gsap)
+).then(() => loadRemoteScript(
+  "https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js",
+  () => Boolean(window.ScrollTrigger)
+)).then(() => {
+  gsap = window.gsap ?? null;
+  ScrollTrigger = window.ScrollTrigger ?? null;
+  if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+  if (gsap && registry && !registry.locked && !registry.timelines.has(registry.current)) {
+    const timeline = animateSceneIn(registry.current);
+    if (timeline) registry.timelines.set(registry.current, timeline);
+  }
+}).catch((error) => {
+  console.info("GSAP is unavailable; built-in scene transitions remain active.", error);
+});
 
 function setText(selector, value, root = document) {
   const element = $(selector, root);
@@ -92,11 +129,22 @@ function prepareCopy() {
   setText("#constellation-quote", CONFIG.constellationQuote);
   setText("#constellation-instruction", CONFIG.constellationInstruction);
   setText("#memory-dialog-title", CONFIG.memories[0]);
-  setText("#final-title", CONFIG.finalMessage);
-  const letterLines = CONFIG.letterHeading.split("\n");
-  renderHeadingLines($("#letter-title"), letterLines, letterLines.length - 1);
-  const freedomLines = CONFIG.freedomHeading.split("\n");
-  renderHeadingLines($("#sunset-title"), freedomLines, freedomLines.length - 1);
+  setText("#perspective-left", CONFIG.perspectives[0].left);
+  setText("#perspective-right", CONFIG.perspectives[0].right);
+  setText(".conversation-lead", CONFIG.conversationLead);
+  setText(".conversation-between", CONFIG.conversationBetween);
+  CONFIG.gameCards.forEach((card, index) => {
+    setText(`#match-word-${index}`, card.label);
+    const button = $(`.match-card[data-card="${index}"]`);
+    if (button) {
+      button.dataset.pair = card.pair;
+      button.setAttribute("aria-label", `Открыть карточку ${index + 1}`);
+    }
+  });
+  CONFIG.promiseItems.forEach((item, index) => {
+    setText(`#promise-node-title-${index}`, item.title);
+    setText(`#promise-node-note-${index}`, item.note);
+  });
   const conversationTitle = $("#conversation-title");
   renderHeadingLines(conversationTitle, CONFIG.conversationHeading, 1, CONFIG.conversationEmphasis);
   if (conversationTitle) {
@@ -105,16 +153,12 @@ function prepareCopy() {
     heart.textContent = "♥";
     conversationTitle.append(heart);
   }
-  const letterBody = $("#letter-body");
-  if (letterBody) letterBody.innerHTML = CONFIG.letter.map((paragraph) => `<p>${paragraph}</p>`).join("");
-  const freedomBody = $(".sunset-text");
-  if (freedomBody) freedomBody.innerHTML = CONFIG.freedom.map((paragraph) => `<p>${paragraph}</p>`).join("");
   $$(".memory-node").forEach((node, index) => { node.setAttribute("aria-label", `Открыть воспоминание ${index + 1}: ${CONFIG.memories[index]}`); });
-  $$(".prompt-chip").forEach((chip, index) => {
-    const prompt = CONFIG.prompts[index];
-    if (!prompt) return;
-    chip.textContent = prompt.label;
-    chip.dataset.prompt = prompt.text;
+  $$(".conversation-option").forEach((button, index) => {
+    const option = CONFIG.conversationOptions[index];
+    if (!option) return;
+    button.textContent = option.label;
+    button.dataset.reaction = option.response;
   });
 }
 
@@ -340,12 +384,11 @@ class WorldScene {
 
   setMode(mode) {
     this.mode = mode;
-    this.canvas.style.opacity = mode === "sunset" ? "0.08" : mode === "letter" ? "0.27" : "0.92";
+    this.canvas.style.opacity = mode === "perspective" ? "0.28" : mode === "match" ? "0.68" : mode === "promise" ? "0.82" : "0.92";
     if (!this.renderer) return;
     if (mode === "intro") this.makeIntroObject();
     else if (mode === "memories") this.makeMemoryObjects();
     else if (mode === "constellation") this.makeConstellationObjects([]);
-    else if (mode === "final") this.makeFinalObjects();
     else this.clearGroup();
     this.renderOnce();
   }
@@ -381,6 +424,12 @@ class WorldScene {
 }
 
 const world = new WorldScene($("#world-canvas"));
+threeReady.then((module) => {
+  if (!module || world.renderer) return;
+  world.canvas.hidden = false;
+  world.ready = world.create();
+  if (world.ready) world.setMode(world.mode);
+});
 
 function animateSceneIn(index) {
   const scene = scenes[index];
@@ -404,27 +453,25 @@ function animateSceneIn(index) {
       .fromTo($$(".constellation-star", scene), { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: duration(.48), stagger: reducedMotion ? 0 : .05, ease: "back.out(1.7)" }, "-=.25")
       .fromTo($(".constellation-bottom", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.65) }, "-=.1");
   } else if (index === 3) {
-    tl.fromTo($(".letter-aside .eyebrow", scene), { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: duration(.65) })
-      .fromTo($(".letter-paper", scene), { opacity: 0, y: 24, rotate: -.5 }, { opacity: 1, y: 0, rotate: 0, duration: duration(1), ease: "power3.out" }, "-=.25")
-      .fromTo($$(".letter-body p", scene), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: duration(.6), stagger: reducedMotion ? 0 : .16 }, "-=.45")
-      .fromTo($(".letter-actions", scene), { opacity: 0 }, { opacity: 1, duration: duration(.55) }, "-=.2");
+    tl.fromTo($(".match-heading", scene), { opacity: 0, y: 24, clipPath: "inset(0 0 22% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.9), ease: "power4.out" })
+      .fromTo($$(".match-card", scene), { opacity: 0, y: 34, rotateX: -17, scale: .9 }, { opacity: 1, y: 0, rotateX: 0, scale: 1, duration: duration(.78), stagger: reducedMotion ? 0 : .07, ease: "back.out(1.55)" }, "-=.28")
+      .fromTo($(".match-footer", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.55) }, "-=.2");
   } else if (index === 4) {
-    tl.fromTo($(".sunset-copy .eyebrow", scene), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: duration(.75) })
-      .fromTo($(".sunset-copy .section-title", scene), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: duration(.9) }, "-=.28")
-      .fromTo($$(".sunset-text p", scene), { opacity: 0, y: 13 }, { opacity: 1, y: 0, duration: duration(.7), stagger: reducedMotion ? 0 : .17 }, "-=.42")
-      .fromTo($(".sunset-next", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.18");
+    tl.fromTo($(".perspective-heading", scene), { opacity: 0, y: 22, clipPath: "inset(0 0 20% 0)" }, { opacity: 1, y: 0, clipPath: "inset(0 0 0 0)", duration: duration(.85), ease: "power4.out" })
+      .fromTo($(".perspective-card", scene), { opacity: 0, y: 26, rotateY: -13, scale: .94, filter: "blur(9px)" }, { opacity: 1, y: 0, rotateY: 0, scale: 1, filter: "blur(0px)", duration: duration(1.05), ease: "power3.out" }, "-=.25")
+      .fromTo($$(".perspective-control, .perspective-footer", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.6), stagger: reducedMotion ? 0 : .1 }, "-=.35");
   } else if (index === 5) {
-    tl.fromTo($(".final-constellation", scene), { opacity: 0, scale: .96 }, { opacity: .68, scale: 1, duration: duration(1.3), ease: "power2.out" })
-      .fromTo($(".final-copy .eyebrow", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.62")
-      .fromTo($(".final-title", scene), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: duration(1) }, "-=.25")
-      .fromTo($(".final-signoff", scene), { opacity: 0 }, { opacity: 1, duration: duration(.6) }, "-=.35")
-      .fromTo($("#to-conversation", scene), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: duration(.55) }, "-=.2");
+    tl.fromTo($(".promise-heading", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.72), ease: "power3.out" })
+      .fromTo($$(".promise-node", scene), { opacity: 0, scale: .72, y: 30, rotation: -8 }, { opacity: 1, scale: 1, y: 0, rotation: 0, duration: duration(.85), stagger: reducedMotion ? 0 : .16, ease: "back.out(1.65)" }, "-=.2")
+      .fromTo($(".promise-bottom", scene), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: duration(.6) }, "-=.25");
   } else {
     tl.fromTo($(".conversation-main .eyebrow", scene), { opacity: 0, y: 9 }, { opacity: 1, y: 0, duration: duration(.65) })
       .fromTo($(".conversation-title", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.9) }, "-=.25")
       .fromTo($(".conversation-lead", scene), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: duration(.65) }, "-=.3")
-      .fromTo($(".conversation-prompts", scene), { opacity: 0 }, { opacity: 1, duration: duration(.55) }, "-=.16")
-      .fromTo($(".reply-card", scene), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: duration(.9), ease: "power3.out" }, "-=.46");
+      .fromTo($(".conversation-choices--first", scene), { opacity: 0, y: 14, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: duration(.6) }, "-=.12")
+      .fromTo($(".conversation-between", scene), { opacity: 0 }, { opacity: 1, duration: duration(.55) }, "-=.18")
+      .fromTo($(".conversation-choices--second", scene), { opacity: 0, y: 12, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: duration(.6) }, "-=.12")
+      .fromTo($(".reply-card", scene), { opacity: 0, y: 18, rotateX: 5 }, { opacity: 1, y: 0, rotateX: 0, duration: duration(.9), ease: "power3.out" }, "-=.25");
   }
   return tl;
 }
@@ -437,8 +484,9 @@ function animateSceneOut(index, onComplete) {
     [$(".intro-copy", scene), { y: -8 }], [$(".intro-orbit", scene), { scale: .965 }],
     [$(".memories-heading", scene), { y: -7 }], [$(".memory-map", scene), { scale: .985 }],
     [$(".constellation-heading", scene), { x: -9 }], [$(".constellation-board", scene), { scale: .985 }],
-    [$(".letter-paper", scene), { y: 8, rotate: .28 }], [$(".sunset-copy", scene), { y: 8 }],
-    [$(".final-constellation", scene), { scale: .965 }], [$(".final-copy", scene), { y: 8 }],
+    [$(".match-heading", scene), { y: -8 }], [$(".match-grid", scene), { scale: .98, rotateX: 2 }],
+    [$(".perspective-heading", scene), { x: -8 }], [$(".perspective-card", scene), { scale: .98, rotateY: 4 }],
+    [$(".promise-heading", scene), { y: -8 }], [$(".promise-galaxy", scene), { scale: .98 }],
     [$(".conversation-main", scene), { x: -8 }], [$(".reply-card", scene), { y: 8 }]
   ];
   const targets = uniqueExit.slice(index * 2, index * 2 + 2).filter(([element]) => element);
@@ -575,6 +623,14 @@ class SceneRegistry {
 }
 
 const registry = new SceneRegistry(scenes);
+lenisReady.then((LenisClass) => {
+  if (!LenisClass) return;
+  Lenis = LenisClass;
+  if (registry.scrollSessions.has(registry.current)) {
+    registry.detachScroll(registry.current);
+    registry.attachScroll(registry.current);
+  }
+});
 
 registry.register(0, { onEnter: () => world.setMode("intro") });
 registry.register(1, {
@@ -586,10 +642,154 @@ registry.register(1, {
   onExit: () => { if (gsap) gsap.killTweensOf(".memory-node"); }
 });
 registry.register(2, { onEnter: () => { world.setMode("constellation"); requestAnimationFrame(() => world.updateConstellation(constellationState.nodes)); } });
-registry.register(3, { onEnter: () => world.setMode("letter") });
-registry.register(4, { onEnter: () => world.setMode("sunset") });
-registry.register(5, { onEnter: () => world.setMode("final") });
+registry.register(3, { onEnter: () => world.setMode("match") });
+registry.register(4, { onEnter: () => { world.setMode("perspective"); renderPerspective(); } });
+registry.register(5, { onEnter: () => { world.setMode("promise"); updatePromiseWeave(); } });
 registry.register(6, { onEnter: () => world.setMode("conversation") });
+
+const matchState = { open: [], matched: new Set(), locked: false };
+const matchCards = $$(".match-card");
+const matchGrid = $("#match-grid");
+
+function updateMatchProgress() {
+  const count = matchState.matched.size / 2;
+  const complete = count === 4;
+  setText("#match-status", complete ? "Все четыре пары соединились. Можно идти дальше." : `Найдено ${count} из 4 пар`);
+  $("#match-next").disabled = !complete;
+  matchGrid.classList.toggle("is-complete", complete);
+  $("#scene-match").classList.toggle("is-complete", complete);
+}
+
+function flipMatchCard(card, open) {
+  card.classList.toggle("is-open", open);
+  card.setAttribute("aria-pressed", String(open));
+  if (gsap) gsap.to($(".match-card__inner", card), { rotateY: open ? 180 : 0, duration: duration(.68), ease: "power3.inOut" });
+}
+
+function resetMatchGame() {
+  matchState.open = [];
+  matchState.matched.clear();
+  matchState.locked = false;
+  matchCards.forEach((card) => {
+    card.classList.remove("is-open", "is-matched");
+    card.setAttribute("aria-pressed", "false");
+    if (gsap) gsap.set($(".match-card__inner", card), { clearProps: "transform" });
+  });
+  updateMatchProgress();
+}
+
+function chooseMatchCard(card) {
+  const id = Number(card.dataset.card);
+  if (matchState.locked || matchState.matched.has(id) || matchState.open.includes(id)) return;
+  flipMatchCard(card, true);
+  matchState.open.push(id);
+  if (matchState.open.length < 2) return;
+  const [firstId, secondId] = matchState.open;
+  const first = matchCards[firstId];
+  const second = matchCards[secondId];
+  if (first.dataset.pair === second.dataset.pair) {
+    matchState.open = [];
+    matchState.matched.add(firstId);
+    matchState.matched.add(secondId);
+    first.classList.add("is-matched");
+    second.classList.add("is-matched");
+    if (gsap) gsap.fromTo([first, second], { scale: 1, filter: "brightness(1)" }, { scale: 1.055, filter: "brightness(1.5)", duration: duration(.32), yoyo: true, repeat: 1, stagger: .04, ease: "power2.out" });
+    updateMatchProgress();
+    return;
+  }
+  matchState.locked = true;
+  if (gsap) gsap.fromTo([first, second], { x: 0 }, { x: 5, duration: duration(.055), repeat: 5, yoyo: true, ease: "sine.inOut", onComplete: () => gsap.set([first, second], { clearProps: "x" }) });
+  window.setTimeout(() => {
+    flipMatchCard(first, false);
+    flipMatchCard(second, false);
+    matchState.open = [];
+    matchState.locked = false;
+  }, reducedMotion ? 120 : 760);
+}
+
+matchCards.forEach((card) => card.addEventListener("click", () => chooseMatchCard(card)));
+$("#match-restart").addEventListener("click", resetMatchGame);
+$("#match-next").addEventListener("click", () => registry.go(4));
+
+let perspectiveIndex = 0;
+const perspectiveCard = $("#perspective-card");
+const perspectiveRange = $("#perspective-range");
+
+function renderPerspective() {
+  const item = CONFIG.perspectives[perspectiveIndex];
+  if (!item) return;
+  setText("#perspective-left", item.left);
+  setText("#perspective-right", item.right);
+  setText("#perspective-count", `${String(perspectiveIndex + 1).padStart(2, "0")} / 03`);
+  perspectiveRange.value = "50";
+  perspectiveCard.style.setProperty("--focus", "50%");
+  $("#perspective-left-side").style.setProperty("--side-focus", "1");
+  $("#perspective-right-side").style.setProperty("--side-focus", "1");
+}
+
+perspectiveRange.addEventListener("input", () => {
+  const value = Number(perspectiveRange.value);
+  perspectiveCard.style.setProperty("--focus", `${value}%`);
+  const leftFocus = 1 - value / 100;
+  const rightFocus = value / 100;
+  const left = $("#perspective-left-side");
+  const right = $("#perspective-right-side");
+  left.style.setProperty("--side-focus", String(.68 + leftFocus * .32));
+  right.style.setProperty("--side-focus", String(.68 + rightFocus * .32));
+  if (gsap) gsap.to([left, right], { scale: (index) => index === 0 ? 1 + leftFocus * .035 : 1 + rightFocus * .035, duration: duration(.24), ease: "power2.out" });
+});
+
+$("#perspective-shift").addEventListener("click", () => {
+  const next = (perspectiveIndex + 1) % CONFIG.perspectives.length;
+  if (!gsap || reducedMotion) {
+    perspectiveIndex = next;
+    renderPerspective();
+    return;
+  }
+  gsap.timeline({ onComplete: () => { perspectiveIndex = next; renderPerspective(); } })
+    .to(perspectiveCard, { rotateY: 13, scale: .965, filter: "blur(5px)", opacity: .25, duration: .24, ease: "power2.in" })
+    .set(perspectiveCard, { rotateY: -13 })
+    .to(perspectiveCard, { rotateY: 0, scale: 1, filter: "blur(0px)", opacity: 1, duration: .55, ease: "power3.out" });
+});
+$("#perspective-next").addEventListener("click", () => registry.go(5));
+
+const selectedPromises = [];
+const promisePath = $("#promise-path");
+
+function updatePromiseWeave() {
+  const nodes = $$(".promise-node");
+  nodes.forEach((node, index) => {
+    const selected = selectedPromises.includes(index);
+    node.classList.toggle("is-selected", selected);
+    node.setAttribute("aria-pressed", String(selected));
+  });
+  const points = selectedPromises.map((index) => nodes[index]?.dataset.point).filter(Boolean);
+  if (selectedPromises.length === nodes.length && points.length) points.push(points[0]);
+  promisePath.setAttribute("points", points.join(" "));
+  if (points.length > 1 && gsap) {
+    const length = promisePath.getTotalLength?.() ?? 0;
+    if (length) {
+      gsap.set(promisePath, { strokeDasharray: length, strokeDashoffset: length });
+      gsap.to(promisePath, { strokeDashoffset: 0, duration: duration(.85), ease: "power2.out" });
+    }
+  }
+  const count = selectedPromises.length;
+  const message = count === nodes.length
+    ? "Четыре опоры соединились. Дальше — только если тебе этого хочется."
+    : count > 0
+      ? `Соединено ${count} из ${nodes.length}. Можно добавить ещё или идти дальше.`
+      : "Коснись одной точки, чтобы начать.";
+  setText("#promise-message", message);
+}
+
+$$ (".promise-node").forEach((node) => node.addEventListener("click", () => {
+  const index = Number(node.dataset.promise);
+  const existing = selectedPromises.indexOf(index);
+  if (existing >= 0) selectedPromises.splice(existing, 1);
+  else selectedPromises.push(index);
+  updatePromiseWeave();
+  if (gsap) gsap.fromTo(node, { scale: .88 }, { scale: 1.08, duration: duration(.3), yoyo: true, repeat: 1, ease: "power2.out" });
+}));
 
 const openedMemories = new Set();
 const memoryDialog = $("#memory-dialog");
@@ -608,10 +808,24 @@ function openMemory(index) {
   updateMemoryProgress();
   setText("#memory-number", String(index + 1).padStart(2, "0"));
   setText("#memory-dialog-title", CONFIG.memories[index]);
+  if (gsap) gsap.killTweensOf([memoryDialog, memoryCard]);
+  memoryDialog.classList.remove("is-closing");
   if (!memoryDialog.open) memoryDialog.showModal();
-  if (gsap) {
-    gsap.fromTo(memoryCard, { opacity: 0, y: 21, scale: .985 }, { opacity: 1, y: 0, scale: 1, duration: duration(.48), ease: "power3.out" });
-    gsap.fromTo($(".memory-card__spark", memoryCard), { scale: .6, rotation: -18 }, { scale: 1, rotation: 0, duration: duration(.55), ease: "back.out(1.8)" });
+  if (gsap && !reducedMotion) {
+    const spark = $(".memory-card__spark", memoryCard);
+    const title = $("#memory-dialog-title");
+    gsap.set(memoryDialog, { opacity: 0, scale: .965, filter: "blur(8px)" });
+    gsap.set(memoryCard, { opacity: 0, y: 34, scale: .88, rotateX: -12, transformPerspective: 900, clipPath: "inset(0 0 18% 0 round 24px)" });
+    gsap.set([spark, title, $(".memory-card__foot", memoryCard), $(".memory-card__done", memoryCard), $(".memory-card__close", memoryCard)], { opacity: 0, y: 13 });
+    gsap.timeline({ defaults: { ease: "power3.out" } })
+      .to(memoryDialog, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .32 }, 0)
+      .to(memoryCard, { opacity: 1, y: 0, scale: 1, rotateX: 0, clipPath: "inset(0 0 0 0 round 18px)", duration: .72, ease: "power4.out" }, .02)
+      .to(spark, { opacity: 1, y: 0, scale: 1.35, rotation: 45, duration: .5, ease: "back.out(2.4)" }, .2)
+      .to(title, { opacity: 1, y: 0, duration: .48, ease: "power3.out" }, .28)
+      .to([$(".memory-card__foot", memoryCard), $(".memory-card__done", memoryCard), $(".memory-card__close", memoryCard)], { opacity: 1, y: 0, duration: .38, stagger: .07 }, .38)
+      .to(spark, { scale: 1, rotation: 0, duration: .45, ease: "elastic.out(1,.55)" }, .48);
+  } else if (gsap) {
+    gsap.set([memoryDialog, memoryCard, $(".memory-card__spark", memoryCard), $("#memory-dialog-title"), $(".memory-card__foot", memoryCard), $(".memory-card__done", memoryCard), $(".memory-card__close", memoryCard)], { clearProps: "all" });
   }
   const node = $(`.memory-node[data-memory="${index}"]`);
   if (gsap) gsap.fromTo(node, { scale: 1 }, { scale: 1.18, duration: duration(.2), yoyo: true, repeat: 1, ease: "power2.inOut" });
@@ -632,9 +846,18 @@ memoryDialog.addEventListener("cancel", (event) => {
 
 function closeMemory() {
   if (!memoryDialog.open) return;
-  const closeNow = () => memoryDialog.close();
-  if (gsap && !reducedMotion) gsap.to(memoryCard, { opacity: 0, y: 10, duration: .2, ease: "power2.in", onComplete: closeNow });
-  else closeNow();
+  const closeNow = () => {
+    memoryDialog.close();
+    memoryDialog.classList.remove("is-closing");
+    if (gsap) gsap.set([memoryDialog, memoryCard, $(".memory-card__spark", memoryCard), $("#memory-dialog-title"), $(".memory-card__foot", memoryCard), $(".memory-card__done", memoryCard), $(".memory-card__close", memoryCard)], { clearProps: "all" });
+  };
+  if (gsap && !reducedMotion) {
+    memoryDialog.classList.add("is-closing");
+    gsap.timeline({ onComplete: closeNow })
+      .to([$(".memory-card__done", memoryCard), $(".memory-card__foot", memoryCard), $("#memory-dialog-title"), $(".memory-card__spark", memoryCard)], { opacity: 0, y: -7, duration: .16, stagger: .025, ease: "power2.in" }, 0)
+      .to(memoryCard, { opacity: 0, y: 24, scale: .9, rotateX: 8, clipPath: "inset(18% 0 0 0 round 24px)", duration: .34, ease: "power3.in" }, .04)
+      .to(memoryDialog, { opacity: 0, scale: .97, filter: "blur(8px)", duration: .3, ease: "power2.in" }, 0);
+  } else closeNow();
 }
 
 const constellationState = { nodes: [], complete: false };
@@ -722,14 +945,7 @@ $("#memories-next").addEventListener("click", () => {
 });
 $("#constellation-next").addEventListener("click", () => { if (constellationState.complete) registry.go(3); });
 $("#constellation-replay").addEventListener("click", resetConstellation);
-$("#show-letter").addEventListener("click", () => {
-  if (gsap) gsap.to($$(".letter-body p"), { opacity: 1, y: 0, duration: duration(.4), stagger: reducedMotion ? 0 : .06, ease: "power2.out" });
-  $("#show-letter").textContent = "Письмо целиком";
-  $("#show-letter").disabled = true;
-});
-$("#letter-next").addEventListener("click", () => registry.go(4));
-$("#sunset-next").addEventListener("click", () => registry.go(5));
-$("#to-conversation").addEventListener("click", () => registry.go(6));
+$("#promise-next").addEventListener("click", () => registry.go(6));
 $("#back-button").addEventListener("click", () => registry.go(registry.current - 1));
 $("#restart-story").addEventListener("click", () => registry.go(0));
 $(".wordmark").addEventListener("click", (event) => { event.preventDefault(); registry.go(0); });
@@ -774,16 +990,20 @@ try {
 updateDraftMeta();
 draft.addEventListener("input", saveDraft);
 
-$$ (".prompt-chip").forEach((chip) => chip.addEventListener("click", () => {
-  const prompt = chip.dataset.prompt ?? "";
-  const start = draft.selectionStart ?? draft.value.length;
-  const end = draft.selectionEnd ?? draft.value.length;
-  const prefix = draft.value && start === draft.value.length && !draft.value.endsWith("\n") ? "\n" : "";
-  draft.setRangeText(`${prefix}${prompt}`, start, end, "end");
-  draft.focus();
-  saveDraft();
-  copyFeedback.textContent = "Фраза добавлена в поле — её можно изменить или удалить.";
-  if (gsap) gsap.fromTo(copyFeedback, { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: duration(.35) });
+const choiceFeedback = $("#conversation-choice-feedback");
+$$ (".conversation-option").forEach((button) => button.addEventListener("click", () => {
+  const response = button.dataset.reaction ?? "";
+  $$(".conversation-option").forEach((option) => option.classList.toggle("is-selected", option === button));
+  choiceFeedback.textContent = response;
+  choiceFeedback.classList.add("is-visible");
+  if (gsap) {
+    gsap.killTweensOf([button, choiceFeedback]);
+    gsap.timeline()
+      .fromTo(button, { scale: .93, rotationX: -10, filter: "brightness(.72)", boxShadow: "0 0 0 rgba(216,184,130,0)" }, { scale: 1.035, rotationX: 0, filter: "brightness(1.2)", boxShadow: "0 0 38px rgba(216,184,130,.24)", duration: duration(.42), ease: "back.out(2.5)" })
+      .to(button, { scale: 1, filter: "brightness(1)", boxShadow: "0 0 20px rgba(216,184,130,.11)", duration: duration(.6), ease: "power2.out" })
+      .fromTo(choiceFeedback, { opacity: 0, y: 15, filter: "blur(8px)", clipPath: "inset(0 50% 0 50%)" }, { opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0 0% 0 0%)", duration: duration(.65), ease: "power3.out" }, "-=.45");
+    gsap.fromTo(button, { borderColor: "rgba(240,215,169,.85)" }, { borderColor: "rgba(240,215,169,.35)", duration: duration(.8), repeat: 1, yoyo: true, ease: "sine.inOut" });
+  }
 }));
 
 async function copyDraftText() {
@@ -819,3 +1039,11 @@ $("#clear-draft").addEventListener("click", () => {
 });
 
 registry.enter(0);
+})().catch((error) => {
+  console.error("The story could not initialize.", error);
+  const notice = document.createElement("div");
+  notice.setAttribute("role", "alert");
+  notice.textContent = "Не удалось запустить интерактивность. Обнови страницу и попробуй ещё раз.";
+  notice.style.cssText = "position:fixed;z-index:100;left:16px;right:16px;bottom:18px;padding:14px 16px;border:1px solid rgba(240,215,169,.45);border-radius:14px;color:#f5efe4;background:#111a23;font:14px/1.45 system-ui,sans-serif;text-align:center";
+  document.body.append(notice);
+});
