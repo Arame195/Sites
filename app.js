@@ -16,13 +16,13 @@ const CONFIG = {
   draftStorageKey: "mezhdu-nami-reply-draft-v1",
   sceneLabels: ["ТИХОЕ ПИСЬМО", "НАШИ ВОСПОМИНАНИЯ", "СОБИРАЕМ НЕБО", "ПРОВОДИМ СВЕТ", "ЧЕТЫРЕ ОПОРЫ", "РАЗГОВОР"],
   memories: [
-    "Помнишь, как мы впервые долго разговаривали?",
+    "Помнишь, как мы начали разговаривать долго?",
     "Наши глупые шутки.",
     "Моменты, когда даже обычный вечер становился особенным.",
     "То, что хочется сохранить в памяти.",
     "И просто ты."
   ],
-  memoryAside: "Некоторые моменты остаются с нами тихо.",
+  memoryAside: "Некоторые моменты остаются с нами.",
   constellationQuote: "Красивые вещи не всегда складываются идеально. Но это не делает их менее ценными.",
   constellationInstruction: "Сначала — верхняя звезда",
   mirrorStart: ["/", "\\", "/", "/"],
@@ -35,7 +35,7 @@ const CONFIG = {
   ],
   conversationHeading: ["Давай теперь", "поговорим и закроем", "этот вопрос"],
   conversationEmphasis: "закроем",
-  conversationLead: "Мне правда важно услышать тебя. Можно ответить сейчас, позже или совсем не отвечать — решать только тебе.",
+  conversationLead: "Как ты хочешь поговрить лучше в реальной жизни или сделать тебе вторую часть?",
   conversationBetween: "Можно выбрать готовую фразу, изменить её или написать всё своими словами.",
   conversationOptions: [
     { label: "Я готова поговорить", response: "Хорошо. Я готов спокойно поговорить и выслушать тебя." },
@@ -738,7 +738,7 @@ function refreshPuzzle() {
   beacon.classList.toggle("is-lit", puzzleComplete);
   $("#puzzle-next").disabled = !puzzleComplete;
   setText("#puzzle-status", puzzleComplete
-    ? "Маяк загорелся. Иногда путь находится шаг за шагом."
+    ? "Видишь все как на свое место становиться)"
     : "Маяк ждёт луча. Поверни зеркала и найди путь.");
 }
 
@@ -1059,7 +1059,5 @@ registry.enter(0);
   console.error("The story could not initialize.", error);
   const notice = document.createElement("div");
   notice.setAttribute("role", "alert");
-  notice.textContent = "Не удалось запустить интерактивность. Обнови страницу и попробуй ещё раз.";
-  notice.style.cssText = "position:fixed;z-index:100;left:16px;right:16px;bottom:18px;padding:14px 16px;border:1px solid rgba(240,215,169,.45);border-radius:14px;color:#f5efe4;background:#111a23;font:14px/1.45 system-ui,sans-serif;text-align:center";
   document.body.append(notice);
 });

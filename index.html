@@ -1,215 +1,240 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b1018" />
-    <meta name="description" content="A little journey through us — тихое интерактивное письмо о воспоминаниях и разговоре." />
-    <title>Между нами — A little journey through us</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css?v=20261121-3" />
-  </head>
-  <body>
-    <div class="site-shell" id="site-shell">
-      <canvas class="world-canvas" id="world-canvas" aria-hidden="true"></canvas>
-      <div class="ambient ambient--one" aria-hidden="true"></div>
-      <div class="ambient ambient--two" aria-hidden="true"></div>
-      <div class="grain" aria-hidden="true"></div>
 
-      <header class="topbar" aria-label="Навигация по истории">
-        <a class="wordmark" href="#start" aria-label="Между нами — к началу">
-          <span class="wordmark__mark" aria-hidden="true"><i></i><i></i></span>
-          <span>между нами</span>
-        </a>
-        <div class="journey-status" aria-live="polite">
-          <span class="journey-status__label" id="scene-label">ТИХОЕ ПИСЬМО</span>
-          <span class="journey-status__count" id="scene-count">01 <b>/</b> 06</span>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1018" />
+  <meta name="description"
+    content="A little journey through us — тихое интерактивное письмо о воспоминаниях и разговоре." />
+  <title>Между нами — A little journey through us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap&subset=cyrillic"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css?v=20261121-3" />
+</head>
+
+<body>
+  <div class="site-shell" id="site-shell">
+    <canvas class="world-canvas" id="world-canvas" aria-hidden="true"></canvas>
+    <div class="ambient ambient--one" aria-hidden="true"></div>
+    <div class="ambient ambient--two" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar" aria-label="Навигация по истории">
+      <a class="wordmark" href="#start" aria-label="Между нами — к началу">
+        <span class="wordmark__mark" aria-hidden="true"><i></i><i></i></span>
+        <span>между нами</span>
+      </a>
+      <div class="journey-status" aria-live="polite">
+        <span class="journey-status__label" id="scene-label">ТИХОЕ ПИСЬМО</span>
+        <span class="journey-status__count" id="scene-count">01 <b>/</b> 06</span>
+      </div>
+    </header>
+
+    <main class="stage" id="stage" aria-live="off">
+      <section class="scene scene--intro is-active" data-scene="0" id="scene-intro" aria-labelledby="intro-title">
+        <div class="scene__inner intro-layout">
+          <div class="intro-copy">
+            <p class="eyebrow"><span class="eyebrow__line"></span>МЫ </p>
+            <h1 class="display-title" id="intro-title">Между<br /><em>нами</em></h1>
+            <p class="intro-lead">В этот раз будет не скучно<br />И главное без лекции</p>
+            <button class="button button--light" id="begin-button" type="button">
+              <span>Посмотреть</span><span class="button__arrow" aria-hidden="true">❤️</span>
+            </button>
+            <p class="microcopy">Несколько минут, только если тебе хочется.</p>
+          </div>
+          <div class="intro-orbit" aria-hidden="true">
+            <span class="intro-orbit__ring intro-orbit__ring--one"></span>
+            <span class="intro-orbit__ring intro-orbit__ring--two"></span>
+            <span class="intro-orbit__halo"></span>
+            <span class="intro-orbit__caption">IN THE SPACE<br />BETWEEN US</span>
+          </div>
+          <div class="intro-index"><span>01</span><span class="intro-index__rule"></span><span>06</span></div>
         </div>
-      </header>
+      </section>
 
-      <main class="stage" id="stage" aria-live="off">
-        <section class="scene scene--intro is-active" data-scene="0" id="scene-intro" aria-labelledby="intro-title">
-          <div class="scene__inner intro-layout">
-            <div class="intro-copy">
-              <p class="eyebrow"><span class="eyebrow__line"></span> A LITTLE JOURNEY THROUGH US</p>
-              <h1 class="display-title" id="intro-title">Между<br /><em>нами</em></h1>
-              <p class="intro-lead">Я не хочу отнимать у тебя время.<br />Просто хочу кое-что показать.</p>
-              <button class="button button--light" id="begin-button" type="button">
-                <span>Посмотреть</span><span class="button__arrow" aria-hidden="true">↗</span>
-              </button>
-              <p class="microcopy">Несколько минут, только если тебе хочется.</p>
-            </div>
-            <div class="intro-orbit" aria-hidden="true">
-              <span class="intro-orbit__ring intro-orbit__ring--one"></span>
-              <span class="intro-orbit__ring intro-orbit__ring--two"></span>
-              <span class="intro-orbit__halo"></span>
-              <span class="intro-orbit__caption">IN THE SPACE<br />BETWEEN US</span>
-            </div>
-            <div class="intro-index"><span>01</span><span class="intro-index__rule"></span><span>06</span></div>
+      <section class="scene scene--memories" data-scene="1" id="scene-memories" aria-labelledby="memories-title"
+        aria-hidden="true" inert>
+        <div class="scene__inner memories-layout">
+          <div class="section-heading memories-heading">
+            <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 01 · ТО, ЧТО ОСТАЛОСЬ С НАМИ</p>
+            <h2 class="section-title" id="memories-title">Маленькая вселенная<br /><em>наших воспоминаний</em></h2>
+            <p class="section-intro">Пять маленьких точек. Нажми на точки и смотри просто.</p>
           </div>
-        </section>
-
-        <section class="scene scene--memories" data-scene="1" id="scene-memories" aria-labelledby="memories-title" aria-hidden="true" inert>
-          <div class="scene__inner memories-layout">
-            <div class="section-heading memories-heading">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 01 · ТО, ЧТО ОСТАЛОСЬ С НАМИ</p>
-              <h2 class="section-title" id="memories-title">Маленькая вселенная<br /><em>наших воспоминаний</em></h2>
-              <p class="section-intro">Пять маленьких точек. Нажми на ту, которая сейчас ближе.</p>
-            </div>
-            <div class="memory-map" id="memory-map" aria-label="Пять воспоминаний">
-              <span class="memory-map__orbit memory-map__orbit--a" aria-hidden="true"></span>
-              <span class="memory-map__orbit memory-map__orbit--b" aria-hidden="true"></span>
-              <span class="memory-map__center" aria-hidden="true"></span>
-              <button class="memory-node" data-memory="0" style="--x:19%;--y:45%;--delay:0s" type="button" aria-label="Открыть первое воспоминание"><span></span><i>01</i></button>
-              <button class="memory-node" data-memory="1" style="--x:37%;--y:25%;--delay:-1.6s" type="button" aria-label="Открыть второе воспоминание"><span></span><i>02</i></button>
-              <button class="memory-node" data-memory="2" style="--x:59%;--y:30%;--delay:-3.2s" type="button" aria-label="Открыть третье воспоминание"><span></span><i>03</i></button>
-              <button class="memory-node" data-memory="3" style="--x:78%;--y:48%;--delay:-2.4s" type="button" aria-label="Открыть четвёртое воспоминание"><span></span><i>04</i></button>
-              <button class="memory-node" data-memory="4" style="--x:48%;--y:70%;--delay:-.8s" type="button" aria-label="Открыть пятое воспоминание"><span></span><i>05</i></button>
-              <p class="memory-map__hint"><span class="pulse-dot"></span><span id="memory-progress">Открыто 0 из 5</span></p>
-            </div>
-            <div class="memory-footer">
-              <p class="memory-note">Это лишь место для настоящих воспоминаний —<br class="desktop-break" /> потом их можно вписать своими словами.</p>
-              <button class="button button--outline" id="memories-next" type="button" disabled><span>Идём дальше</span><span class="button__arrow" aria-hidden="true">↗</span></button>
-            </div>
+          <div class="memory-map" id="memory-map" aria-label="Пять воспоминаний">
+            <span class="memory-map__orbit memory-map__orbit--a" aria-hidden="true"></span>
+            <span class="memory-map__orbit memory-map__orbit--b" aria-hidden="true"></span>
+            <span class="memory-map__center" aria-hidden="true"></span>
+            <button class="memory-node" data-memory="0" style="--x:19%;--y:45%;--delay:0s" type="button"
+              aria-label="Открыть первое воспоминание"><span></span><i>01</i></button>
+            <button class="memory-node" data-memory="1" style="--x:37%;--y:25%;--delay:-1.6s" type="button"
+              aria-label="Открыть второе воспоминание"><span></span><i>02</i></button>
+            <button class="memory-node" data-memory="2" style="--x:59%;--y:30%;--delay:-3.2s" type="button"
+              aria-label="Открыть третье воспоминание"><span></span><i>03</i></button>
+            <button class="memory-node" data-memory="3" style="--x:78%;--y:48%;--delay:-2.4s" type="button"
+              aria-label="Открыть четвёртое воспоминание"><span></span><i>04</i></button>
+            <button class="memory-node" data-memory="4" style="--x:48%;--y:70%;--delay:-.8s" type="button"
+              aria-label="Открыть пятое воспоминание"><span></span><i>05</i></button>
+            <p class="memory-map__hint"><span class="pulse-dot"></span><span id="memory-progress">Открыто 0 из 5</span>
+            </p>
           </div>
-          <dialog class="memory-dialog" id="memory-dialog" aria-labelledby="memory-dialog-title">
-            <form method="dialog" class="memory-card">
-              <button class="icon-button memory-card__close" value="close" aria-label="Закрыть воспоминание">×</button>
-              <p class="eyebrow"><span class="eyebrow__line"></span> ТОЧКА <span id="memory-number">01</span></p>
-              <span class="memory-card__spark" aria-hidden="true">✳</span>
-              <h3 id="memory-dialog-title">Помнишь, как мы впервые долго разговаривали?</h3>
-              <p class="memory-card__foot">Некоторые моменты остаются с нами тихо.</p>
-              <button class="button button--light memory-card__done" value="close">Оставить это здесь <span class="button__arrow" aria-hidden="true">↗</span></button>
-            </form>
-          </dialog>
-        </section>
-
-        <section class="scene scene--constellation" data-scene="2" id="scene-constellation" aria-labelledby="constellation-title" aria-hidden="true" inert>
-          <div class="scene__inner constellation-layout">
-            <div class="section-heading constellation-heading">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 02 · МАЛЕНЬКАЯ ИГРА</p>
-              <h2 class="section-title" id="constellation-title">Собери<br /><em>наше небо</em></h2>
-              <p class="section-intro">Коснись звёзд по очереди — и посмотри, что получится.</p>
-            </div>
-            <div class="constellation-board" id="constellation-board" aria-label="Игровое поле со звёздами">
-              <svg class="constellation-lines" id="constellation-lines" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true"><polyline id="constellation-path" points=""></polyline></svg>
-              <button class="constellation-star" data-star="0" style="--x:50%;--y:20%" type="button" aria-label="Первая звезда"></button>
-              <button class="constellation-star" data-star="1" style="--x:29%;--y:9%" type="button" aria-label="Вторая звезда"></button>
-              <button class="constellation-star" data-star="2" style="--x:12%;--y:23%" type="button" aria-label="Третья звезда"></button>
-              <button class="constellation-star" data-star="3" style="--x:13%;--y:47%" type="button" aria-label="Четвёртая звезда"></button>
-              <button class="constellation-star" data-star="4" style="--x:26%;--y:66%" type="button" aria-label="Пятая звезда"></button>
-              <button class="constellation-star" data-star="5" style="--x:50%;--y:82%" type="button" aria-label="Шестая звезда"></button>
-              <button class="constellation-star" data-star="6" style="--x:74%;--y:66%" type="button" aria-label="Седьмая звезда"></button>
-              <button class="constellation-star" data-star="7" style="--x:87%;--y:47%" type="button" aria-label="Восьмая звезда"></button>
-              <button class="constellation-star" data-star="8" style="--x:88%;--y:23%" type="button" aria-label="Девятая звезда"></button>
-              <button class="constellation-star" data-star="9" style="--x:71%;--y:9%" type="button" aria-label="Десятая звезда"></button>
-              <span class="constellation-board__instruction" id="constellation-instruction">Сначала — верхняя звезда</span>
-            </div>
-            <div class="constellation-bottom">
-              <p class="constellation-quote" id="constellation-quote" aria-live="polite">Красивые вещи не всегда складываются идеально.<br />Но это не делает их менее ценными.</p>
-              <div class="constellation-actions"><button class="text-button" id="constellation-replay" type="button">Начать заново <span aria-hidden="true">↻</span></button><button class="text-button constellation-next" id="constellation-next" type="button" disabled>Дальше <span aria-hidden="true">↗</span></button></div>
-            </div>
+          <div class="memory-footer">
+            <p class="memory-note">Это лишь место для настоящих воспоминаний —<br class="desktop-break" /> потом их
+              можно вписать своими словами.</p>
+            <button class="button button--outline" id="memories-next" type="button" disabled><span>Идём
+                дальше</span><span class="button__arrow" aria-hidden="true">↗</span></button>
           </div>
-        </section>
+        </div>
+        <dialog class="memory-dialog" id="memory-dialog" aria-labelledby="memory-dialog-title">
+          <form method="dialog" class="memory-card">
+            <button class="icon-button memory-card__close" value="close" aria-label="Закрыть воспоминание">×</button>
+            <p class="eyebrow"><span class="eyebrow__line"></span> ТОЧКА <span id="memory-number">01</span></p>
+            <span class="memory-card__spark" aria-hidden="true">❤️</span>
+            <h3 id="memory-dialog-title">Помнишь, как мы начали разговаривать долго?</h3>
+            <p class="memory-card__foot">Некоторые моменты остаются с нами.</p>
+            <button class="button button--light memory-card__done" value="close">Оставить это здесь <span
+                class="button__arrow" aria-hidden="true">↗</span></button>
+          </form>
+        </dialog>
+      </section>
 
-        <section class="scene scene--puzzle" data-scene="3" id="scene-puzzle" aria-labelledby="puzzle-title" aria-hidden="true" inert>
-          <div class="puzzle-backdrop" aria-hidden="true"><span class="puzzle-backdrop__halo"></span><span class="puzzle-backdrop__orbit puzzle-backdrop__orbit--one"></span><span class="puzzle-backdrop__orbit puzzle-backdrop__orbit--two"></span></div>
-          <div class="scene__inner puzzle-layout">
-            <header class="section-heading puzzle-heading">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 03 · НЕБОЛЬШОЕ ИСПЫТАНИЕ</p>
-              <h2 class="section-title" id="puzzle-title">Проведи<br /><em>свет к маяку</em></h2>
-              <p class="section-intro">Поверни зеркала, чтобы луч нашёл дорогу. Здесь можно пробовать сколько угодно.</p>
-              <p class="puzzle-instruction"><span class="puzzle-instruction__icon" aria-hidden="true">↻</span> Коснись зеркала — оно повернётся.</p>
-            </header>
-            <div class="puzzle-console">
-              <div class="puzzle-board" id="puzzle-board" role="group" aria-label="Поверни зеркала и проведи луч к маяку">
-                <svg class="puzzle-ray-layer" viewBox="0 0 400 400" aria-hidden="true">
-                  <defs>
-                    <filter id="beam-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-                    <linearGradient id="beam-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a5bfd1" /><stop offset="55%" stop-color="#d5c4e8" /><stop offset="100%" stop-color="#f2d4a0" /></linearGradient>
-                  </defs>
-                  <path class="puzzle-grid-lines" d="M100 0V400 M200 0V400 M300 0V400 M0 100H400 M0 200H400 M0 300H400" />
-                  <polyline class="puzzle-beam" id="puzzle-beam" points="0,250 150,250" />
-                </svg>
-                <div class="puzzle-source" aria-label="Источник света"><span></span><i></i></div>
-                <div class="puzzle-beacon" id="puzzle-beacon" aria-label="Маяк — цель"><span></span><i></i></div>
-                <button class="puzzle-mirror" data-mirror="0" data-orientation="/" style="--x:37.5%;--y:62.5%" type="button" aria-label="Повернуть зеркало 1"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>01</small></button>
-                <button class="puzzle-mirror" data-mirror="1" data-orientation="\" style="--x:37.5%;--y:37.5%" type="button" aria-label="Повернуть зеркало 2"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>02</small></button>
-                <button class="puzzle-mirror" data-mirror="2" data-orientation="/" style="--x:62.5%;--y:37.5%" type="button" aria-label="Повернуть зеркало 3"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>03</small></button>
-                <button class="puzzle-mirror" data-mirror="3" data-orientation="/" style="--x:62.5%;--y:62.5%" type="button" aria-label="Повернуть зеркало 4"><span class="puzzle-mirror__frame"><i class="puzzle-mirror__line"></i></span><small>04</small></button>
+      <section class="scene scene--constellation" data-scene="2" id="scene-constellation"
+        aria-labelledby="constellation-title" aria-hidden="true" inert>
+        <div class="scene__inner constellation-layout">
+          <div class="section-heading constellation-heading">
+            <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 02 · МАЛЕНЬКАЯ ИГРА</p>
+            <h2 class="section-title" id="constellation-title">Собери<br /><em>наше Сердечко❤️</em></h2>
+            <p class="section-intro">Коснись звёзд по очереди — и посмотри, что получится.</p>
+          </div>
+          <div class="constellation-board" id="constellation-board" aria-label="Игровое поле со звёздами">
+            <svg class="constellation-lines" id="constellation-lines" viewBox="0 0 1000 560" preserveAspectRatio="none"
+              aria-hidden="true">
+              <polyline id="constellation-path" points=""></polyline>
+            </svg>
+            <button class="constellation-star" data-star="0" style="--x:50%;--y:20%" type="button"
+              aria-label="Первая звезда"></button>
+            <button class="constellation-star" data-star="1" style="--x:29%;--y:9%" type="button"
+              aria-label="Вторая звезда"></button>
+            <button class="constellation-star" data-star="2" style="--x:12%;--y:23%" type="button"
+              aria-label="Третья звезда"></button>
+            <button class="constellation-star" data-star="3" style="--x:13%;--y:47%" type="button"
+              aria-label="Четвёртая звезда"></button>
+            <button class="constellation-star" data-star="4" style="--x:26%;--y:66%" type="button"
+              aria-label="Пятая звезда"></button>
+            <button class="constellation-star" data-star="5" style="--x:50%;--y:82%" type="button"
+              aria-label="Шестая звезда"></button>
+            <button class="constellation-star" data-star="6" style="--x:74%;--y:66%" type="button"
+              aria-label="Седьмая звезда"></button>
+            <button class="constellation-star" data-star="7" style="--x:87%;--y:47%" type="button"
+              aria-label="Восьмая звезда"></button>
+            <button class="constellation-star" data-star="8" style="--x:88%;--y:23%" type="button"
+              aria-label="Девятая звезда"></button>
+            <button class="constellation-star" data-star="9" style="--x:71%;--y:9%" type="button"
+              aria-label="Десятая звезда"></button>
+            <span class="constellation-board__instruction" id="constellation-instruction">Сначала — верхняя
+              звезда</span>
+          </div>
+          <div class="constellation-bottom">
+            <p class="constellation-quote" id="constellation-quote" aria-live="polite">Красивые вещи не всегда
+              складываются идеально.<br />Но это не делает их менее ценными.</p>
+            <div class="constellation-actions"><button class="text-button" id="constellation-replay"
+                type="button">Начать заново <span aria-hidden="true">↻</span></button><button
+                class="text-button constellation-next" id="constellation-next" type="button" disabled>Дальше <span
+                  aria-hidden="true">↗</span></button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene scene--puzzle" data-scene="3" id="scene-puzzle" aria-labelledby="puzzle-title"
+        aria-hidden="true" inert>
+        <div class="puzzle-backdrop" aria-hidden="true"><span class="puzzle-backdrop__halo"></span><span
+            class="puzzle-backdrop__orbit puzzle-backdrop__orbit--one"></span><span
+            class="puzzle-backdrop__orbit puzzle-backdrop__orbit--two"></span></div>
+        <div class="scene__inner puzzle-layout">
+          <header class="section-heading puzzle-heading">
+            <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 03 · НЕБОЛЬШОЕ ИСПЫТАНИЕ</p>
+            <h2 class="section-title" id="puzzle-title">Проведи<br /><em>свет к маяку</em></h2>
+            <p class="section-intro">Поверни зеркала, чтобы луч нашёл дорогу. Здесь можно пробовать сколько угодно.</p>
+            <p class="puzzle-instruction"><span class="puzzle-instruction__icon" aria-hidden="true">↻</span> Коснись
+              зеркала — оно повернётся.</p>
+          </header>
+          <div class="puzzle-console">
+            <div class="puzzle-board" id="puzzle-board" role="group" aria-label="Поверни зеркала и проведи луч к маяку">
+              <svg class="puzzle-ray-layer" viewBox="0 0 400 400" aria-hidden="true">
+                <defs>
+                  <filter id="beam-glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="5" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <linearGradient id="beam-gradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#a5bfd1" />
+                    <stop offset="55%" stop-color="#d5c4e8" />
+                    <stop offset="100%" stop-color="#f2d4a0" />
+                  </linearGradient>
+                </defs>
+                <path class="puzzle-grid-lines" d="M100 0V400 M200 0V400 M300 0V400 M0 100H400 M0 200H400 M0 300H400" />
+                <polyline class="puzzle-beam" id="puzzle-beam" points="0,250 150,250" />
+              </svg>
+              <div class="puzzle-source" aria-label="Источник света"><span></span><i></i></div>
+              <div class="puzzle-beacon" id="puzzle-beacon" aria-label="Маяк — цель"><span></span><i></i></div>
+              <button class="puzzle-mirror" data-mirror="0" data-orientation="/" style="--x:37.5%;--y:62.5%"
+                type="button" aria-label="Повернуть зеркало 1"><span class="puzzle-mirror__frame"><i
+                    class="puzzle-mirror__line"></i></span><small>01</small></button>
+              <button class="puzzle-mirror" data-mirror="1" data-orientation="\" style="--x:37.5%;--y:37.5%"
+                type="button" aria-label="Повернуть зеркало 2"><span class="puzzle-mirror__frame"><i
+                    class="puzzle-mirror__line"></i></span><small>02</small></button>
+              <button class="puzzle-mirror" data-mirror="2" data-orientation="/" style="--x:62.5%;--y:37.5%"
+                type="button" aria-label="Повернуть зеркало 3"><span class="puzzle-mirror__frame"><i
+                    class="puzzle-mirror__line"></i></span><small>03</small></button>
+              <button class="puzzle-mirror" data-mirror="3" data-orientation="/" style="--x:62.5%;--y:62.5%"
+                type="button" aria-label="Повернуть зеркало 4"><span class="puzzle-mirror__frame"><i
+                    class="puzzle-mirror__line"></i></span><small>04</small></button>
+            </div>
+            <div class="puzzle-footer">
+              <p class="puzzle-status" id="puzzle-status" role="status" aria-live="polite">Маяк ждёт луча. Поверни
+                зеркала и найди путь.</p>
+              <div class="puzzle-actions">
+                <button class="text-button" id="puzzle-hint" type="button">Подсказка <span
+                    aria-hidden="true">✧</span></button>
+                <button class="text-button" id="puzzle-reset" type="button">Заново <span
+                    aria-hidden="true">↻</span></button>
+                <button class="button button--light" id="puzzle-next" type="button"
+                  disabled><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button>
               </div>
-              <div class="puzzle-footer">
-                <p class="puzzle-status" id="puzzle-status" role="status" aria-live="polite">Маяк ждёт луча. Поверни зеркала и найди путь.</p>
-                <div class="puzzle-actions">
-                  <button class="text-button" id="puzzle-hint" type="button">Подсказка <span aria-hidden="true">✧</span></button>
-                  <button class="text-button" id="puzzle-reset" type="button">Заново <span aria-hidden="true">↻</span></button>
-                  <button class="button button--light" id="puzzle-next" type="button" disabled><span>Продолжить</span><span class="button__arrow" aria-hidden="true">↗</span></button>
-                </div>
-              </div>
             </div>
           </div>
-        </section>
-        <section class="scene scene--promise" data-scene="4" id="scene-promise" aria-labelledby="promise-title" aria-hidden="true" inert>
-          <div class="promise-backdrop" aria-hidden="true"><span class="promise-backdrop__halo"></span><span class="promise-backdrop__grain"></span></div>
-          <div class="scene__inner promise-layout">
-            <header class="section-heading promise-heading">
-              <p class="eyebrow"><span class="eyebrow__line"></span> ГЛАВА 04 · ТО, ЧТО МОЖНО ВЗЯТЬ С СОБОЙ</p>
-              <h2 class="section-title" id="promise-title">Четыре опоры<br /><em>для разговора</em></h2>
-              <p class="section-intro">Коснись каждой точки и соедини их в одно созвездие.</p>
-            </header>
-            <div class="promise-galaxy" id="promise-galaxy" aria-label="Четыре опоры для разговора">
-              <svg class="promise-lines" viewBox="0 0 1000 440" preserveAspectRatio="none" aria-hidden="true"><polyline id="promise-path" points=""></polyline></svg>
-              <button class="promise-node" data-promise="0" data-point="500,55" style="--x:50%;--y:14%" type="button" aria-pressed="false"><span class="promise-node__number">01</span><strong class="promise-node__title" id="promise-node-title-0">Слушать</strong><small class="promise-node__note" id="promise-node-note-0">не перебивая</small><i aria-hidden="true"></i></button>
-              <button class="promise-node" data-promise="1" data-point="850,220" style="--x:84%;--y:50%" type="button" aria-pressed="false"><span class="promise-node__number">02</span><strong class="promise-node__title" id="promise-node-title-1">Понять</strong><small class="promise-node__note" id="promise-node-note-1">даже в несогласии</small><i aria-hidden="true"></i></button>
-              <button class="promise-node" data-promise="2" data-point="500,385" style="--x:50%;--y:87%" type="button" aria-pressed="false"><span class="promise-node__number">03</span><strong class="promise-node__title" id="promise-node-title-2">Говорить честно</strong><small class="promise-node__note" id="promise-node-note-2">и бережно</small><i aria-hidden="true"></i></button>
-              <button class="promise-node" data-promise="3" data-point="150,220" style="--x:16%;--y:50%" type="button" aria-pressed="false"><span class="promise-node__number">04</span><strong class="promise-node__title" id="promise-node-title-3">Беречь границы</strong><small class="promise-node__note" id="promise-node-note-3">не торопить ответ</small><i aria-hidden="true"></i></button>
-            </div>
-            <div class="promise-bottom"><p class="promise-message" id="promise-message" aria-live="polite">Коснись одной точки, чтобы начать.</p><button class="button button--light" id="promise-next" type="button"><span>Перейти к разговору</span><span class="button__arrow" aria-hidden="true">↗</span></button></div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="scene scene--conversation" data-scene="5" id="scene-conversation" aria-labelledby="conversation-title" aria-hidden="true" inert>
-          <div class="scene__inner conversation-layout">
-            <div class="conversation-main">
-              <p class="eyebrow"><span class="eyebrow__line"></span> МЕСТО ДЛЯ ТВОИХ СЛОВ</p>
-              <h2 class="conversation-title" id="conversation-title">Давай теперь<br />поговорим и <em>закроем</em><br />этот вопрос<span class="heart-mark">♥</span></h2>
-              <p class="conversation-lead">Мне правда важно услышать тебя. Можно ответить сейчас, позже или совсем не отвечать — решать только тебе.</p>
-            </div>
-            <div class="conversation-choices conversation-choices--first" aria-label="Выбрать, что сказать">
-              <button type="button" class="conversation-option" data-choice="0">Я готова поговорить</button>
-              <button type="button" class="conversation-option" data-choice="1">Мне нужно время</button>
-            </div>
-            <p class="conversation-between">Нажатие на кнопку только покажет спокойную реакцию и не добавит текст в поле. Для своих слов — место ниже.</p>
-            <div class="conversation-choices conversation-choices--second" aria-label="Другие варианты ответа">
-              <button type="button" class="conversation-option" data-choice="2">Мне есть что сказать</button>
-              <button type="button" class="conversation-option" data-choice="3">Пока не знаю</button>
-            </div>
-            <p class="conversation-choice-feedback" id="conversation-choice-feedback" role="status" aria-live="polite"></p>
-            <form class="reply-card" id="reply-form">
-              <div class="reply-card__head"><span>ТВОЙ ОТВЕТ</span><span class="reply-card__index">01 — 06</span></div>
-              <label class="sr-only" for="reply-draft">Твоё сообщение</label>
-              <textarea id="reply-draft" name="reply" rows="5" placeholder="Пиши так, как чувствуешь. Здесь не нужны правильные слова…" spellcheck="true"></textarea>
-              <div class="reply-card__meta"><span class="save-indicator"><i></i><span id="draft-status">Черновик сохраняется на этом устройстве</span></span><span id="character-count">0 символов</span></div>
-              <div class="reply-card__actions">
-                <button class="button button--light button--copy" id="copy-draft" type="button"><span>Скопировать текст</span><span class="button__arrow" aria-hidden="true">↗</span></button>
-                <button class="text-button text-button--quiet" id="clear-draft" type="button">Очистить</button>
-              </div>
-              <p class="reply-card__note">Это личный черновик только на этом устройстве. Сообщение никуда не отправляется — сервер не подключён. Скопируй текст, чтобы отправить его тем способом, который выберешь сама.</p>
-              <div class="copy-feedback" id="copy-feedback" role="status" aria-live="polite"></div>
-            </form>
-            <button class="restart-button" id="restart-story" type="button"><span aria-hidden="true">↺</span> Вернуться в начало</button>
-          </div>
-        </section>
-      </main>
 
-      <footer class="bottombar" id="bottombar">
-        <button class="back-button" id="back-button" type="button" aria-label="Вернуться к предыдущей сцене" hidden><span aria-hidden="true">←</span> НАЗАД</button>
-        <div class="progress-track" aria-hidden="true"><span id="progress-fill"></span></div>
-        <span class="bottombar__caption" id="bottom-caption">A QUIET STORY, AT YOUR OWN PACE</span>
-      </footer>
-    </div>
-    <script defer src="./app.js?v=20261121-3"></script>
-  </body>
+      <section class="scene scene--conversation" data-scene="5" id="scene-conversation"
+        aria-labelledby="conversation-title" aria-hidden="true" inert>
+        <div class="scene__inner conversation-layout">
+          <div class="conversation-main">
+            <p class="eyebrow"><span class="eyebrow__line"></span> МЕСТО ДЛЯ ТВОИХ СЛОВ</p>
+            <h2 class="conversation-title" id="conversation-title">один вопрос<br />хочу <em>я</em><br />тебе
+              задать<span class="heart-mark">♥</span></h2>
+            <p class="conversation-lead">Как ты хочешь поговрить лучше в реальной жизни или сделать тебе вторую часть?</p>
+          </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bottombar" id="bottombar">
+      <button class="back-button" id="back-button" type="button" aria-label="Вернуться к предыдущей сцене" hidden><span
+          aria-hidden="true">←</span> НАЗАД</button>
+      <div class="progress-track" aria-hidden="true"><span id="progress-fill"></span></div>
+      <span class="bottombar__caption" id="bottom-caption">A QUIET STORY, AT YOUR OWN PACE</span>
+    </footer>
+  </div>
+  <script defer src="./app.js?v=20261121-3"></script>
+</body>
+
 </html>
